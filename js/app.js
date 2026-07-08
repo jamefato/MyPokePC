@@ -7,6 +7,16 @@ const abText = document.getElementById("abilities").innerText
 const cryText = document.getElementById("cries").innerText
 const formText = document.getElementById("forms").innerText
 
+// Listens for enter pressed (no button needed)
+const enterSearch = document.getElementById("pokemon");
+
+enterSearch.addEventListener('keydown', function(event) {
+    if (event.key == 'Enter') {
+        console.log("enter pressed!")
+        search();
+    }
+});
+
 // Runs on startup if coming from the dex page
 console.log(localStorage);
 const mon = localStorage.getItem("query");
@@ -18,6 +28,8 @@ console.log(startSearch);
 if (startSearch) {
     console.log("SEARCHING");
     document.getElementById("pokemon").innerText = mon;
+    localStorage.removeItem("query");
+    localStorage.removeItem("search");
     search();
 }
 

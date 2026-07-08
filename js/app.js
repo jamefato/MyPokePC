@@ -1,20 +1,97 @@
 let url = "https://pokeapi.co/api/v2";
 let query = "/pokemon"; // Base query is pokemon
 
-// Initial text: (none for now)
-const infoText = document.getElementById("info").innerText
-const abText = document.getElementById("abilities").innerText
-const cryText = document.getElementById("cries").innerText
-const formText = document.getElementById("forms").innerText
+// --- PREMIUM CUSTOM AUTOCOMPLETE ENGINE ---
+let globalPokemonList = []; // Stores master directory in memory
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const inputField = document.getElementById("pokemon");
+  const dropdownMenu = document.getElementById("custom-dropdown");
+  if (!inputField || !dropdownMenu) return;
+
+  // 1. Fetch master database directory once on app initialization
+  try {
+    const response = await fetch(
+      "https://pokeapi.co/api/v2/pokemon?limit=1025",
+    );
+    if (response.ok) {
+      const data = await response.json();
+      globalPokemonList = data.results;
+    }
+  } catch (e) {
+    console.error("Failed to build custom autocomplete index:", e);
+  }
+
+  // 2. Handle keystrokes inside the input bar
+  inputField.addEventListener("input", () => {
+    const query = inputField.value.trim().toLowerCase();
+
+    // Hide if search is empty
+    if (!query) {
+      dropdownMenu.classList.add("hidden");
+      return;
+    }
+
+    // Filter standard list array matching query string anywhere in name
+    const matches = globalPokemonList
+      .filter((p) => p.name.includes(query))
+      .slice(0, 8);
+
+    if (matches.length === 0) {
+      dropdownMenu.classList.add("hidden");
+      return;
+    }
+
+    // Generate gorgeous inner HTML rows
+    dropdownMenu.innerHTML = matches
+      .map((pokemon) => {
+        const formattedName = pokemon.name
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+        return `<div class="dropdown-item" data-value="${pokemon.name}">${formattedName}</div>`;
+      })
+      .join("");
+
+    dropdownMenu.classList.remove("hidden");
+  });
+
+  // 3. Handle item selection when a dropdown row is clicked
+  dropdownMenu.addEventListener("click", (e) => {
+    const clickedItem = e.target.closest(".dropdown-item");
+    if (!clickedItem) return;
+
+    const selectedValue = clickedItem.getAttribute("data-value");
+    inputField.value = selectedValue;
+    dropdownMenu.classList.add("hidden");
+
+    // Execute your partner's exact search chain cleanly
+    const searchBtn =
+      document.getElementById("search-btn") ||
+      document.querySelector('button[type="submit"]');
+    if (searchBtn) {
+      searchBtn.click();
+    } else if (typeof search === "function") {
+      search();
+    }
+  });
+
+  // 4. Close the menu if user clicks anywhere outside the search block
+  document.addEventListener("click", (e) => {
+    if (!inputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.add("hidden");
+    }
+  });
+});
 
 // Listens for enter pressed (no button needed)
 const enterSearch = document.getElementById("pokemon");
 
-enterSearch.addEventListener('keydown', function(event) {
-    if (event.key == 'Enter') {
-        console.log("enter pressed!")
-        search();
-    }
+enterSearch.addEventListener("keydown", function (event) {
+  if (event.key == "Enter") {
+    console.log("enter pressed!");
+    search();
+  }
 });
 
 // Runs on startup if coming from the dex page
@@ -26,199 +103,496 @@ console.log(mon);
 console.log(startSearch);
 
 if (startSearch) {
-    console.log("SEARCHING");
-    document.getElementById("pokemon").innerText = mon;
-    localStorage.removeItem("query");
-    localStorage.removeItem("search");
-    search();
+  console.log("SEARCHING");
+  document.getElementById("pokemon").innerText = mon;
+  localStorage.removeItem("query");
+  localStorage.removeItem("search");
+  search();
 }
 
 function search() {
+  let newPokemon = document.getElementById("pokemon").value;
 
-    let newPokemon = document.getElementById("pokemon").value;
+  let name = "/" + newPokemon;
 
-    let name = "/" + newPokemon;
+  let endpoint = url + query + name;
 
-    let endpoint = url + query + name;
+  console.log(newPokemon);
+  console.log(endpoint);
 
-    console.log(newPokemon);
-    console.log(endpoint);
+  // AI assisted in ensuring the cache function works properly
+  // We do not want to get in trouble for making too many requests...
 
-    // AI assisted in ensuring the cache function works properly
-    // We do not want to get in trouble for making too many requests...
+  const cachedMons = "pokeCache" + name;
+  const cached = localStorage.getItem(cachedMons);
 
-    const cachedMons = "pokeCache" + name;
-    const cached = localStorage.getItem(cachedMons);
+  if (cached) {
+    console.log("USING CACHE");
+    parseInfo(JSON.parse(cached));
+    return;
+  }
 
-    if (cached) {
-        console.log("USING CACHE");
-        parseInfo(JSON.parse(cached));
-        return;
-    }
+  let promise = fetch(endpoint);
 
-
-    let promise = fetch(endpoint);
-    
-    promise.then((res) => {
-
-    console.log(res)
-    return res.json()
-
-    }).then(data => {
-    
-        console.log(data)
-        localStorage.setItem(cachedMons, JSON.stringify(data));
-        parseInfo(data);
-
+  promise
+    .then((res) => {
+      console.log(res);
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+      localStorage.setItem(cachedMons, JSON.stringify(data));
+      parseInfo(data);
     });
 }
 
-function parseInfo(data) {
-    // Basic info (name, Pokedex number...)
+async function parseInfo(data) {
+  const feedContainer = document.getElementById("pokemon-game-feed");
+  if (!feedContainer) return;
 
-    const infoContainer = document.getElementById("info")
-    infoContainer.replaceChildren()
-    infoContainer.innerText = infoText
-    const olI = document.createElement('ul')
-
-    // Name
-
-    let info1 = document.createElement('li')
-    info1.innerText = self.toNameCase(data.name)
-    olI.appendChild(info1)
-
-    // Pokedex Number
-
-    let info2 = document.createElement('li')
-    info2.innerText = "Pokedex number " + String(data.id)
-    olI.appendChild(info2)
-
-    // Types
-
-    let info3 = document.createElement('li')
-    for (let i = 0; i < data.types.length; i++) {
-        if (!i) {
-            info3.innerText = String(self.toNameCase(data.types[i].type.name))
-        } else {
-            info3.innerText += "/" + String(self.toNameCase(data.types[i].type.name))
-        }
+  // 1. ASYNCHRONOUS POKÉDEX FLAVOR TEXT EXTRACTION
+  let pokedexEntry = "Data log index unavailable for this system model.";
+  try {
+    const speciesResponse = await fetch(
+      `https://pokeapi.co/api/v2/pokemon-species/${data.id}/`,
+    );
+    if (speciesResponse.ok) {
+      const speciesData = await speciesResponse.json();
+      const englishEntries = speciesData.flavor_text_entries.filter(
+        (entry) => entry.language.name === "en",
+      );
+      if (englishEntries.length > 0) {
+        pokedexEntry = englishEntries[0].flavor_text
+          .replace(/\f/g, " ")
+          .replace(/\n/g, " ");
+      }
     }
-    info3.innerText += " type"
-    olI.appendChild(info3)
+  } catch (e) {}
 
-    infoContainer.appendChild(olI)
+  // 2. FETCH ALL ENCOUNTERS RAW DATA ONCE UP FRONT
+  let rawEncounters = [];
+  try {
+    const encounterResponse = await fetch(data.location_area_encounters);
+    if (encounterResponse.ok) {
+      rawEncounters = await encounterResponse.json();
+    }
+  } catch (e) {
+    console.error("Error pulling encounter logs:", e);
+  }
 
-    // Abilities
+  // 3. FETCH ALTERNATIVE FORM SPRITES VIA PROMISES
+  let formsDataArray = [];
+  if (data.forms && data.forms.length > 1) {
+    try {
+      const formPromises = data.forms.map((f) =>
+        fetch(f.url).then((res) => res.json()),
+      );
+      formsDataArray = await Promise.all(formPromises);
+    } catch (e) {}
+  }
 
-    const abContainer = document.getElementById("abilities")
-    abContainer.replaceChildren()
-    abContainer.innerText = abText
-    const olA = document.createElement('ol')
+  feedContainer.innerHTML = "";
 
-    data.abilities.forEach(ab => {
-        const li = document.createElement('li')
-        let abilities = ab.ability.name
-        abilities = self.toNameCase(abilities)
-        li.textContent = abilities
-        olA.appendChild(li)
+  const cleanName = toNameCase(data.name);
+  const typesList = data.types.map((t) => toNameCase(t.type.name)).join(" / ");
+  const abilitiesList = data.abilities
+    .map((a) => toNameCase(a.ability.name))
+    .join(", ");
+  const heightMeters = data.height / 10;
+  const weightKilograms = data.weight / 10;
+  const baseExp = data.base_experience || "---";
+
+  // 4. GENERATE TABS WITH DATA PARAMETERS FOR ONCLICK SWAPPING
+  let formsTabsHTML = "";
+  if (formsDataArray.length > 1) {
+    formsTabsHTML = `
+            <div class="form-tabs-container">
+                ${formsDataArray
+                  .map((formObj, idx) => {
+                    const rawFormName = formObj.name;
+                    let displayLabel = rawFormName.includes("-")
+                      ? rawFormName.split("-")[1]
+                      : rawFormName;
+                    displayLabel = toNameCase(displayLabel);
+
+                    const isActive =
+                      data.name === rawFormName
+                        ? "active-tab"
+                        : idx === 0 && !data.name.includes("-")
+                          ? "active-tab"
+                          : "";
+
+                    const fNormal = formObj.sprites.front_default || "";
+                    const bNormal = formObj.sprites.back_default || "";
+                    const fShiny = formObj.sprites.front_shiny || "";
+                    const bShiny = formObj.sprites.back_shiny || "";
+
+                    return `
+                        <button class="form-layout-tab ${isActive}" 
+                                data-f-normal="${fNormal}" 
+                                data-b-normal="${bNormal}" 
+                                data-f-shiny="${fShiny}" 
+                                data-b-shiny="${bShiny}"
+                                onclick="
+                                    const parent = this.parentElement;
+                                    parent.querySelectorAll('.form-layout-tab').forEach(b => b.classList.remove('active-tab'));
+                                    this.classList.add('active-tab');
+
+                                    const card = this.closest('.game-entry-card');
+                                    if(card) {
+                                        const imgFN = card.querySelector('.img-front-normal');
+                                        const imgBN = card.querySelector('.img-back-normal');
+                                        const imgFS = card.querySelector('.img-front-shiny');
+                                        const imgBS = card.querySelector('.img-back-shiny');
+
+                                        if(imgFN && this.dataset.fNormal) imgFN.src = this.dataset.fNormal;
+                                        if(imgBN && this.dataset.bNormal) imgBN.src = this.dataset.bNormal;
+                                        if(imgFS && this.dataset.fShiny) imgFS.src = this.dataset.fShiny;
+                                        if(imgBS && this.dataset.bShiny) imgBS.src = this.dataset.bShiny;
+                                    }
+                                ">
+                            ${displayLabel}
+                        </button>
+                    `;
+                  })
+                  .join("")}
+            </div>
+        `;
+  } else {
+    formsTabsHTML = `<div class="form-tabs-container"><button class="form-layout-tab active-tab">Default Form</button></div>`;
+  }
+
+  // 5. CHRONOLOGICAL MASTER GAME INDEX ARRAY
+  // Added 'internalVersionKeys' matching PokéAPI's exact internal location version names
+  const gameVersions = [
+    {
+      key: "red-blue",
+      displayName: "Red",
+      gen: "Generation I",
+      spriteKey: "generation-i",
+      internalVersionKeys: ["red"],
+    },
+    {
+      key: "red-blue",
+      displayName: "Blue",
+      gen: "Generation I",
+      spriteKey: "generation-i",
+      internalVersionKeys: ["blue"],
+    },
+    {
+      key: "yellow",
+      displayName: "Yellow",
+      gen: "Generation I",
+      spriteKey: "generation-i",
+      internalVersionKeys: ["yellow"],
+    },
+    {
+      key: "gold",
+      displayName: "Gold",
+      gen: "Generation II",
+      spriteKey: "generation-ii",
+      internalVersionKeys: ["gold"],
+    },
+    {
+      key: "silver",
+      displayName: "Silver",
+      gen: "Generation II",
+      spriteKey: "generation-ii",
+      internalVersionKeys: ["silver"],
+    },
+    {
+      key: "crystal",
+      displayName: "Crystal",
+      gen: "Generation II",
+      spriteKey: "generation-ii",
+      internalVersionKeys: ["crystal"],
+    },
+    {
+      key: "ruby-sapphire",
+      displayName: "Ruby",
+      gen: "Generation III",
+      spriteKey: "generation-iii",
+      internalVersionKeys: ["ruby"],
+    },
+    {
+      key: "ruby-sapphire",
+      displayName: "Sapphire",
+      gen: "Generation III",
+      spriteKey: "generation-iii",
+      internalVersionKeys: ["sapphire"],
+    },
+    {
+      key: "emerald",
+      displayName: "Emerald",
+      gen: "Generation III",
+      spriteKey: "generation-iii",
+      internalVersionKeys: ["emerald"],
+    },
+    {
+      key: "firered-leafgreen",
+      displayName: "Fire Red",
+      gen: "Generation III",
+      spriteKey: "generation-iii",
+      internalVersionKeys: ["firered"],
+    },
+    {
+      key: "firered-leafgreen",
+      displayName: "Leaf Green",
+      gen: "Generation III",
+      spriteKey: "generation-iii",
+      internalVersionKeys: ["leafgreen"],
+    },
+    {
+      key: "diamond-pearl",
+      displayName: "Diamond",
+      gen: "Generation IV",
+      spriteKey: "generation-iv",
+      internalVersionKeys: ["diamond"],
+    },
+    {
+      key: "diamond-pearl",
+      displayName: "Pearl",
+      gen: "Generation IV",
+      spriteKey: "generation-iv",
+      internalVersionKeys: ["pearl"],
+    },
+    {
+      key: "platinum",
+      displayName: "Platinum",
+      gen: "Generation IV",
+      spriteKey: "generation-iv",
+      internalVersionKeys: ["platinum"],
+    },
+    {
+      key: "heartgold-soulsilver",
+      displayName: "Heart Gold",
+      gen: "Generation IV",
+      spriteKey: "generation-iv",
+      internalVersionKeys: ["heartgold"],
+    },
+    {
+      key: "heartgold-soulsilver",
+      displayName: "Soul Silver",
+      gen: "Generation IV",
+      spriteKey: "generation-iv",
+      internalVersionKeys: ["soulsilver"],
+    },
+    {
+      key: "black-white",
+      displayName: "Black",
+      gen: "Generation V",
+      spriteKey: "generation-v",
+      internalVersionKeys: ["black"],
+    },
+    {
+      key: "black-white",
+      displayName: "White",
+      gen: "Generation V",
+      spriteKey: "generation-v",
+      internalVersionKeys: ["white"],
+    },
+    {
+      key: "black-2-white-2",
+      displayName: "Black 2",
+      gen: "Generation V",
+      spriteKey: "generation-v",
+      internalVersionKeys: ["black-2"],
+    },
+    {
+      key: "black-2-white-2",
+      displayName: "White 2",
+      gen: "Generation V",
+      spriteKey: "generation-v",
+      internalVersionKeys: ["white-2"],
+    },
+    {
+      key: "x-y",
+      displayName: "X",
+      gen: "Generation VI",
+      spriteKey: "generation-vi",
+      internalVersionKeys: ["x"],
+    },
+    {
+      key: "x-y",
+      displayName: "Y",
+      gen: "Generation VI",
+      spriteKey: "generation-vi",
+      internalVersionKeys: ["y"],
+    },
+    {
+      key: "omegaruby-alphasapphire",
+      displayName: "Omega Ruby",
+      gen: "Generation VI",
+      spriteKey: "generation-vi",
+      internalVersionKeys: ["omega-ruby"],
+    },
+    {
+      key: "omegaruby-alphasapphire",
+      displayName: "Alpha Sapphire",
+      gen: "Generation VI",
+      spriteKey: "generation-vi",
+      internalVersionKeys: ["alpha-sapphire"],
+    },
+  ];
+
+  // 6. RENDER CARDS LOG
+  gameVersions.forEach((game) => {
+    let versionSprites = null;
+    let mainHeaderSpriteUrl = "";
+
+    try {
+      versionSprites = data.sprites.versions[game.spriteKey][game.key];
+      if (!versionSprites || !versionSprites.front_default) return;
+      mainHeaderSpriteUrl = versionSprites.front_default;
+    } catch (e) {
+      return;
+    }
+
+    // DYNAMIC ENCOUNTER FILTERING FOR THIS CARD'S GAME VERSION
+    // Filter out only locations that include this card's specific game title in its version_details array
+    const filteredLocations = rawEncounters.filter((loc) => {
+      return loc.version_details.some((detail) =>
+        game.internalVersionKeys.includes(detail.version.name),
+      );
     });
-    abContainer.appendChild(olA)
 
-    // Cries
-
-    const cryContainer = document.getElementById("cries")
-    cryContainer.replaceChildren()
-    cryContainer.innerText = cryText
-    const olC = document.createElement("ol")
-    let cryArray = []
-
-    for (let i = 0; i < 2; i++) {
-        const li = document.createElement('li')
-        const button = document.createElement('button')
-
-        let cryType
-        if (i == 0) {
-            cryType = data.cries.latest
-            button.id = "latest"
-            button.innerText = "Latest"
-
-        } else {
-            cryType = data.cries.legacy
-            button.id = "legacy"
-            button.innerText = "Legacy"
-        }
-        
-        
-        cryArray.push(new Audio(cryType))
-        button.onclick = playCry()
-        li.appendChild(button)
-        olC.appendChild(li)
-    }
-    cryContainer.appendChild(olC)
-    
-    // Forms
-
-    const formContainer = document.getElementById("forms")
-    formContainer.replaceChildren()
-    formContainer.innerText = formText
-    const olF = document.createElement('ol')
-    data.forms.forEach(formData =>{
-        const li = document.createElement('li')
-        let form = formData.name
-        form = self.toNameCase(form)
-        li.textContent = form
-        olF.appendChild(li)
-    });
-
-    formContainer.appendChild(olF)
-    
-    // Sprites
-
-    const spriteContainer = document.getElementById("sprites")
-    spriteContainer.replaceChildren()
-
-    console.log(spriteContainer)
-    
-    const spr1 = data.sprites.back_default
-    const spr2 = data.sprites.back_female
-    const spr3 = data.sprites.back_shiny
-    const spr4 = data.sprites.back_shiny_female
-    const spr5 = data.sprites.front_default
-    const spr6 = data.sprites.front_female
-    const spr7 = data.sprites.front_shiny
-    const spr8 = data.sprites.front_shiny_female
-
-    const sprites = [spr1, spr2, spr3, spr4, spr5, spr6, spr7, spr8]
-
-    for (let i = 0; i < sprites.length; i++) {
-        if (sprites[i] != null) {
-            const img = document.createElement('img')
-            img.src = sprites[i]
-            spriteContainer.appendChild(img)
-        }
+    let locationsHTML = `<div class="no-location">Uncatchable / Event only in ${game.displayName}.</div>`;
+    if (filteredLocations.length > 0) {
+      locationsHTML = filteredLocations
+        .slice(0, 6)
+        .map((loc) => {
+          const cleanLocName = loc.location_area.name
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+          return `<div class="location-row">📍 ${cleanLocName}</div>`;
+        })
+        .join("");
     }
 
+    const vaultFrontNormal =
+      versionSprites.front_default || data.sprites.front_default || "";
+    const vaultBackNormal =
+      versionSprites.back_default || data.sprites.back_default || "";
+    const vaultFrontShiny =
+      versionSprites.front_shiny || data.sprites.front_shiny || "";
+    const vaultBackShiny =
+      versionSprites.back_shiny || data.sprites.back_shiny || "";
 
+    const hasFemaleSprite = !!versionSprites.front_female;
+    const vaultFrontFemale =
+      versionSprites.front_female || data.sprites.front_female || "";
+    const vaultBackFemale =
+      versionSprites.back_female || data.sprites.back_female || "";
+    const vaultFrontShinyFemale =
+      versionSprites.front_shiny_female ||
+      data.sprites.front_shiny_female ||
+      "";
+    const vaultBackShinyFemale =
+      versionSprites.back_shiny_female || data.sprites.back_shiny_female || "";
+
+    const renderClass =
+      game.spriteKey === "generation-vi" ? "gen-6-render" : "";
+
+    const frontNormalBlock = hasFemaleSprite
+      ? `<div class="gender-split-subrow"><img src="${vaultFrontNormal}" class="img-front-normal ${renderClass}"><span>♂</span><img src="${vaultFrontFemale}" class="${renderClass}"><span>♀</span></div>`
+      : `<img src="${vaultFrontNormal}" class="img-front-normal dashboard-sprite ${renderClass}">`;
+
+    const backNormalBlock = hasFemaleSprite
+      ? `<div class="gender-split-subrow"><img src="${vaultBackNormal}" class="img-back-normal ${renderClass}"><span>♂</span><img src="${vaultBackFemale}" class="${renderClass}"><span>♀</span></div>`
+      : `<img src="${vaultBackNormal}" class="img-back-normal dashboard-sprite ${renderClass}">`;
+
+    const frontShinyBlock = hasFemaleSprite
+      ? `<div class="gender-split-subrow"><img src="${vaultFrontShiny}" class="img-front-shiny ${renderClass}"><span>♂</span><img src="${vaultFrontShinyFemale}" class="${renderClass}"><span>♀</span></div>`
+      : `<img src="${vaultFrontShiny}" class="img-front-shiny dashboard-sprite ${renderClass}">`;
+
+    const backShinyBlock = hasFemaleSprite
+      ? `<div class="gender-split-subrow"><img src="${vaultBackShiny}" class="img-back-shiny ${renderClass}"><span>♂</span><img src="${vaultBackShinyFemale}" class="${renderClass}"><span>♀</span></div>`
+      : `<img src="${vaultBackShiny}" class="img-back-shiny dashboard-sprite ${renderClass}">`;
+
+    const cardHTML = `
+            <details class="game-entry-card" data-game="${game.key}">
+                <summary class="game-entry-header">
+                    <div class="header-main-info">
+                        <img src="${mainHeaderSpriteUrl}" alt="${game.displayName} sprite" class="game-mini-sprite">
+                        <div class="title-text-group">
+                            <span class="game-title">${cleanName} — ${game.displayName}</span>
+                            <span class="generation-subtitle">${game.gen}</span>
+                        </div>
+                    </div>
+                    <span class="expand-arrow">▼</span>
+                </summary>
+                
+                <div class="game-entry-content">
+                    ${formsTabsHTML}
+
+                    <div class="info-dashboard-grid">
+                        
+                        <!-- COL 1: SPRITES CABINET -->
+                        <div class="dashboard-col col-sprites">
+                            <span class="data-label">${game.displayName.toUpperCase()} SPRITE CABINET</span>
+                            <div class="sprite-display-cabinet big-cabinet">
+                                <div class="sprite-box">${frontNormalBlock}<span>Normal Front</span></div>
+                                <div class="sprite-box">${backNormalBlock}<span>Normal Back</span></div>
+                                <div class="sprite-box shiny-bg">${frontShinyBlock}<span class="shiny-txt">★ Shiny Front</span></div>
+                                <div class="sprite-box shiny-bg">${backShinyBlock}<span class="shiny-txt">★ Shiny Back</span></div>
+                            </div>
+                        </div>
+                        
+                        <!-- COL 2: VITALS & ENCYCLOPEDIA LOG -->
+                        <div class="dashboard-col col-stats">
+                            <span class="data-label">VITAL COEFFICIENTS</span>
+                            <div class="stats-table-box">
+                                <div class="spec-row"><span class="label">INDEX:</span> <span class="val">#${String(data.id).padStart(3, "0")}</span></div>
+                                <div class="spec-row"><span class="label">TYPE:</span> <span class="val">${typesList}</span></div>
+                                <div class="spec-row"><span class="label">HEIGHT:</span> <span class="val">${heightMeters} m</span></div>
+                                <div class="spec-row"><span class="label">WEIGHT:</span> <span class="val">${weightKilograms} kg</span></div>
+                            </div>
+                            
+                            <span class="data-label">TRAIT INDICES</span>
+                            <div class="stats-table-box">
+                                <div class="spec-row"><span class="label">ABILITIES:</span> <span class="val-scroll">${abilitiesList}</span></div>
+                                <div class="spec-row"><span class="label">BASE EXP:</span> <span class="val">${baseExp}</span></div>
+                            </div>
+
+                            <span class="data-label">ARCHIVAL ENTRY LOG</span>
+                            <p class="flavor-text mini-text">"${pokedexEntry}"</p>
+                        </div>
+
+                        <!-- COL 3: CHRONOLOGICAL HABITAT RADAR PANEL -->
+                        <div class="dashboard-col col-location">
+                            <span class="data-label">${game.displayName.toUpperCase()} FIELD HABITATS</span>
+                            <div class="location-radar-box">
+                                ${locationsHTML}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </details>
+        `;
+    feedContainer.insertAdjacentHTML("beforeend", cardHTML);
+  });
 }
 
 function playCry() {
-    if (this.id == "latest") {
-        cryArray[0].play();
-        console.log("Well, I tried");
-    }
+  if (this.id == "latest") {
+    cryArray[0].play();
+    console.log("Well, I tried");
+  }
 }
 
 function toNameCase(word) {
-    for (let i = 0; i < word.length; i++) {
-        if (!i) {
-            word = word.charAt(0).toUpperCase() + word.slice(1);
-        } else if (word.charAt(i) == "-") {
-            // Don't do for 2 abilities that actually have a dash in them (if I care to implement)
-            word = word.slice(0, i) + " " + word.slice(i + 1);
-        }
-        else if (word.charAt(i - 1) == " ") {
-            word = word.slice(0, i) + word.charAt(i).toUpperCase() + word.slice(i + 1);
-        }
+  for (let i = 0; i < word.length; i++) {
+    if (!i) {
+      word = word.charAt(0).toUpperCase() + word.slice(1);
+    } else if (word.charAt(i) == "-") {
+      // Don't do for 2 abilities that actually have a dash in them (if I care to implement)
+      word = word.slice(0, i) + " " + word.slice(i + 1);
+    } else if (word.charAt(i - 1) == " ") {
+      word =
+        word.slice(0, i) + word.charAt(i).toUpperCase() + word.slice(i + 1);
     }
-    return word;
+  }
+  return word;
 }

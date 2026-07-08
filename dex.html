@@ -37,11 +37,15 @@
             placeholder="Search by name or number..."
             name=""
             id="pokemon"
+            autocomplete="off"
           />
-          <span class="search-icon" onclick="search()"
-            ><img src="assets/icons8-search-24.png" alt="search"
-          /></span>
-          />
+
+          <span class="search-icon" onclick="search()">
+            <img src="assets/icons8-search-24.png" alt="search" />
+          </span>
+
+          <!-- 2. REPLACED <datalist> with your new fully-customizable pixel dropdown menu -->
+          <div id="custom-dropdown" class="custom-dropdown-menu hidden"></div>
         </div>
       </div>
     </header>

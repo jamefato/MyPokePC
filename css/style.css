@@ -72,6 +72,7 @@ body {
 }
 /* The actual Search Input Box wrapper */
 .search-box {
+  position: relative;
   display: flex;
   align-items: center;
   width: 50%;
@@ -86,8 +87,58 @@ body {
   border: none;
   background: none;
   width: 100%;
-  font-size: 14px;
+  font-size: 15px;
   outline: none; /* Removes the ugly default browser outline when clicked */
+}
+.search-icon {
+  transform: scale(0.8);
+}
+
+/* --- RETRO DROPDOWN DESIGN --- */
+.custom-dropdown-menu {
+  position: absolute;
+  top: 100%; /* Positions it perfectly at the bottom edge of the search box */
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: #fcfbfa;
+  border: 2px solid #333;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 9999; /* Forces it to sit on top of any page content below it */
+}
+
+/* List item row layout */
+.dropdown-item {
+  font-family:
+    "Silkscreen", monospace; /* Adjust this to match your layout's font */
+  font-size: 12px;
+  padding: 10px 14px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+/* Hover dynamic highlight state */
+.dropdown-item:hover {
+  background-color: rgb(
+    80,
+    142,
+    56
+  ); /* A nice green highlight to match your aesthetic */
+  color: white;
+}
+
+/* Hide helper class state */
+.custom-dropdown-menu.hidden {
+  display: none;
 }
 .grid {
   display: grid;
@@ -456,6 +507,441 @@ body {
 }
 
 .btn-submit {
-  background-color: #2e7d32; /* Matches your green theme header! */
+  background-color: rgb(80, 142, 56); /* Matches your green theme header! */
   color: white;
 }
+
+/*HERE STARTS THE SEARCH PAGE*/
+.info-page-layout {
+  display: grid;
+  /* Changes the center column to exactly 70% of the screen width.
+     The 1.5fr spaces on the left/right split the remaining 30% evenly! 
+  */
+  grid-template-columns: 1.5fr 60% 1.5fr;
+  gap: 24px;
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* SIDE COLUMNS (Invisible but holding space) */
+.side-column {
+  /* They will sit empty for now, pushing your main content dead-center */
+}
+
+/* THE FILTER BAR */
+.feed-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.custom-filter-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Clear Minimal Trigger Button */
+.filter-trigger-btn {
+  font-family: "Silkscreen", monospace;
+  background: transparent;
+  border: none;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  user-select: none;
+}
+
+.filter-trigger-btn:hover {
+  opacity: 0.7;
+}
+
+/* Custom Filter Menu (Hidden by default, shows on focus) */
+.filter-menu {
+  position: absolute;
+  top: 110%;
+  right: 0; /* Aligns flush with the right side of the filter text */
+  background-color: #f4f1ea;
+  border: 2px solid #333;
+  border-radius: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 160px;
+  z-index: 20;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  display: none;
+}
+
+/* CSS Click Trigger using focus-within */
+.custom-filter-dropdown:focus-within .filter-menu {
+  display: block;
+}
+
+.filter-item {
+  font-family: "Silkscreen", monospace;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #333;
+  cursor: pointer;
+}
+
+.filter-item:hover {
+  background-color: rgb(80, 142, 56);
+  color: white;
+}
+
+/* --- GAME FEED CARD INTERNAL LAYOUT --- */
+.pokemon-game-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Creates a clean, distinct gap between each little card */
+  width: 100%;
+}
+
+/* THE ACCORDION TURNED INTO A LITTLE CARD */
+.game-entry-card {
+  background-color: #f4f1ea;
+  border: 2px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1); /* Nice little retro shadow */
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+/* Subtle bounce effect when hovering over a closed card */
+.game-entry-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* THE CARD HEADER CONTAINER */
+.game-entry-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.game-entry-header::-webkit-details-marker {
+  display: none;
+}
+
+/* Keep your text group stacked cleanly inside the card */
+.header-main-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.game-mini-sprite {
+  /* Scale it up to a nice, prominent size */
+  width: 80px;
+  height: 80px;
+
+  /* CRUCIAL: Stops the browser from blurring the upscaled pixels */
+  image-rendering: pixelated; /* For Chrome, Safari, and Edge */
+
+  /* Keeps the image perfectly proportional within its box boundaries */
+  object-fit: contain;
+  transform: scale(1.4);
+}
+.title-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.game-title {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.generation-subtitle {
+  font-family: "Silkscreen", monospace;
+  font-size: 11px;
+  color: #333;
+  opacity: 0.5;
+}
+
+/* --- WHEN THE CARD IS EXPANDED/OPENED --- */
+.game-entry-card[open] {
+  transform: none; /* Disables hover bounce while reading */
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* --- ACCORDION INNER CONTENT LAYOUT --- */
+.game-entry-content {
+  padding: 20px;
+  border-top: 2px dashed #333;
+  background-color: #fcfbfa;
+}
+.form-tabs-container {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 1px;
+}
+
+.form-layout-tab {
+  font-family: "Silkscreen", monospace;
+  font-size: 12px;
+  padding: 6px 14px;
+  background-color: #eae7df;
+  border: 2px solid #333;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.1s ease;
+}
+
+.form-layout-tab:hover {
+  background-color: #f4f1ea;
+  color: #111;
+}
+
+.form-layout-tab.active-tab {
+  background-color: #fcfbfa; /* Matches card inner content color background */
+  color: #111;
+  font-weight: bold;
+  position: relative;
+  top: 2px; /* Pulls tab line down to mask the container border ring neatly */
+  padding-bottom: 8px;
+}
+/* 3-Column Responsive Dashboard */
+.info-page-layout {
+  display: grid;
+  grid-template-columns: 2fr 60% 2fr;
+  gap: 24px;
+  width: 100%;
+}
+
+/* --- THE NEW RETRO TAB ROW LAYOUT --- */
+.form-tabs-container {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 1px;
+}
+
+.form-layout-tab {
+  font-family: "Silkscreen", monospace;
+  font-size: 12px;
+  padding: 6px 14px;
+  background-color: #eae7df;
+  border: 2px solid #333;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.1s ease;
+}
+
+.form-layout-tab:hover {
+  background-color: #f4f1ea;
+  color: #111;
+}
+
+.form-layout-tab.active-tab {
+  background-color: #fcfbfa; /* Matches card inner content background color */
+  color: #111;
+  font-weight: bold;
+  position: relative;
+  top: 2px; /* Pulls tab line down to mask the container border ring neatly */
+  padding-bottom: 8px;
+}
+.gender-split-subrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.gender-split-subrow img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.gender-split-subrow span {
+  font-size: 10px;
+  font-weight: bold;
+  opacity: 0.7;
+}
+/* --- THE 3-COLUMN DASHBOARD GRID --- */
+.game-entry-content {
+  padding: 20px;
+  border-top: 2px dashed #333;
+  background-color: #fcfbfa;
+}
+
+.info-dashboard-grid {
+  display: grid;
+  /* Left: Sprites, Middle: Stats, Right: Encounter Scroll */
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* SECTION TITLES (Tiny retro headers) */
+.data-label {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: #333;
+  opacity: 0.6;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.flavor-text.mini-text {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #444;
+  font-style: italic;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 6px 8px;
+  border-radius: 6px;
+  border-left: 3px solid rgb(80, 142, 56);
+}
+
+/* --- THE BIG 2x2 SPRITE CABINET --- */
+.sprite-display-cabinet.big-cabinet {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    1fr
+  ); /* Converts layout into a 2x2 square grid */
+  gap: 10px;
+  background: #f4f1ea;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #333;
+}
+
+.sprite-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.sprite-box span {
+  font-size: 9px;
+  font-weight: bold;
+  color: #666;
+  margin-top: 2px;
+}
+
+.dashboard-sprite {
+  width: 72px; /* Bigger sprite vault assets */
+  height: 72px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  transform: scale(1.2);
+}
+
+/* Highlights for shiny sprites */
+.sprite-box .shiny-bg {
+  background: #fffdf0;
+}
+.shiny-txt {
+  color: #b08d00 !important;
+}
+
+/* --- STATS TABLES --- */
+.stats-table-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+  padding-bottom: 4px;
+}
+.spec-row:last-child {
+  border: none;
+  padding: 0;
+}
+
+.spec-row .label {
+  color: #666;
+}
+.spec-row .val {
+  font-size: 14px;
+  color: #111;
+}
+.spec-row .val-scroll {
+  color: #111;
+  text-align: right;
+  font-size: 11px;
+}
+.location-radar-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fbf9f3;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 235px; /* Keeps the heights aligned with the sprite box */
+  overflow-y: auto; /* Allows scrolling inside the panel if there are many areas */
+}
+
+.location-row {
+  font-size: 11px;
+  font-weight: 500;
+  color: #444;
+  background: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-location {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+/*font-family: "Pixelify Sans", sans-serif;*/

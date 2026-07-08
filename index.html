@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&family=DotGothic16&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/style.css" />
     <title>Document</title>
   </head>
@@ -30,14 +34,42 @@
             placeholder="Search by name or number..."
             name=""
             id="pokemon"
+            autocomplete="off"
           />
-          <span class="search-icon" onclick="search()"
-            ><img src="assets/icons8-search-24.png" alt="search"
-          /></span>
+
+          <span class="search-icon" onclick="search()">
+            <img src="assets/icons8-search-24.png" alt="search" />
+          </span>
+
+          <!-- 2. REPLACED <datalist> with your new fully-customizable pixel dropdown menu -->
+          <div id="custom-dropdown" class="custom-dropdown-menu hidden"></div>
         </div>
       </div>
     </header>
+    <div class="info-page-layout">
+      <div class="side-column left-side"></div>
 
+      <main class="center-column">
+        <div class="feed-header-bar">
+          <div class="feed-title-placeholder"></div>
+          <div class="custom-filter-dropdown">
+            <button class="filter-trigger-btn">
+              Filter <span class="filter-arrow">▼</span>
+            </button>
+            <ul class="filter-menu">
+              <li class="filter-item" data-value="all">All Games</li>
+              <li class="filter-item" data-value="hg">Heart Gold</li>
+              <li class="filter-item" data-value="ss">Soul Silver</li>
+              <li class="filter-item" data-value="or">Omega Ruby</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pokemon-game-feed" id="pokemon-game-feed"></div>
+      </main>
+
+      <div class="side-column right-side"></div>
+    </div>
     <div id="info-container">
       <p id="info">Information:</p>
       <p id="abilities">Abilities:</p>

@@ -11,8 +11,8 @@ enterSearch.addEventListener('keydown', function(event) {
 // Switches files and searches for specified pokemon
 
 function searchPage() {
-    console.log("SEARCHING FOR REAL")
-    globalSearch = document.getElementById("poke-search").innerText;
-    globalSearching = true;
+    console.log("SEARCHING FOR REAL");
+    localStorage.setItem("query", String(document.getElementById("poke-search").value));
+    localStorage.setItem("search", true);
     window.location.href = "index.html";
 }

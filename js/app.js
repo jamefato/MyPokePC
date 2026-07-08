@@ -7,12 +7,18 @@ const abText = document.getElementById("abilities").innerText
 const cryText = document.getElementById("cries").innerText
 const formText = document.getElementById("forms").innerText
 
-
-
+// Runs on startup if coming from the dex page
+if (globalSearching) {
+    document.getElementById.innerText = globalSearch;
+    globalSearching = false;
+    globalSearch = "";
+    search();
+}
 
 function search() {
 
     let newPokemon = document.getElementById("pokemon").value;
+
     let name = "/" + newPokemon;
 
     let endpoint = url + query + name;

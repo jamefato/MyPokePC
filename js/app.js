@@ -1,7 +1,6 @@
 let url = "https://pokeapi.co/api/v2";
 let query = "/pokemon"; // Base query is pokemon
 
-// --- PREMIUM CUSTOM AUTOCOMPLETE ENGINE ---
 let globalPokemonList = []; // Stores master directory in memory
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -41,8 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       dropdownMenu.classList.add("hidden");
       return;
     }
-
-    // Generate gorgeous inner HTML rows
+    //drop down menu
     dropdownMenu.innerHTML = matches
       .map((pokemon) => {
         const formattedName = pokemon.name
@@ -56,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     dropdownMenu.classList.remove("hidden");
   });
 
-  // 3. Handle item selection when a dropdown row is clicked
   dropdownMenu.addEventListener("click", (e) => {
     const clickedItem = e.target.closest(".dropdown-item");
     if (!clickedItem) return;
@@ -65,7 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     inputField.value = selectedValue;
     dropdownMenu.classList.add("hidden");
 
-    // Execute your partner's exact search chain cleanly
     const searchBtn =
       document.getElementById("search-btn") ||
       document.querySelector('button[type="submit"]');
@@ -76,7 +72,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // 4. Close the menu if user clicks anywhere outside the search block
   document.addEventListener("click", (e) => {
     if (!inputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.add("hidden");
@@ -150,7 +145,6 @@ async function parseInfo(data) {
   const feedContainer = document.getElementById("pokemon-game-feed");
   if (!feedContainer) return;
 
-  // 1. ASYNCHRONOUS POKÉDEX FLAVOR TEXT EXTRACTION
   let pokedexEntry = "Data log index unavailable for this system model.";
   try {
     const speciesResponse = await fetch(
@@ -169,7 +163,6 @@ async function parseInfo(data) {
     }
   } catch (e) {}
 
-  // 2. FETCH ALL ENCOUNTERS RAW DATA ONCE UP FRONT
   let rawEncounters = [];
   try {
     const encounterResponse = await fetch(data.location_area_encounters);
@@ -180,7 +173,6 @@ async function parseInfo(data) {
     console.error("Error pulling encounter logs:", e);
   }
 
-  // 3. FETCH ALTERNATIVE FORM SPRITES VIA PROMISES
   let formsDataArray = [];
   if (data.forms && data.forms.length > 1) {
     try {
@@ -202,7 +194,6 @@ async function parseInfo(data) {
   const weightKilograms = data.weight / 10;
   const baseExp = data.base_experience || "---";
 
-  // 4. GENERATE TABS WITH DATA PARAMETERS FOR ONCLICK SWAPPING
   let formsTabsHTML = "";
   if (formsDataArray.length > 1) {
     formsTabsHTML = `
@@ -262,8 +253,7 @@ async function parseInfo(data) {
     formsTabsHTML = `<div class="form-tabs-container"><button class="form-layout-tab active-tab">Default Form</button></div>`;
   }
 
-  // 5. CHRONOLOGICAL MASTER GAME INDEX ARRAY
-  // Added 'internalVersionKeys' matching PokéAPI's exact internal location version names
+  //CHRONOLOGICAL GAME INDEX ARRAY
   const gameVersions = [
     {
       key: "red-blue",
@@ -435,7 +425,6 @@ async function parseInfo(data) {
     },
   ];
 
-  // 6. RENDER CARDS LOG
   gameVersions.forEach((game) => {
     let versionSprites = null;
     let mainHeaderSpriteUrl = "";
@@ -449,7 +438,6 @@ async function parseInfo(data) {
     }
 
     // DYNAMIC ENCOUNTER FILTERING FOR THIS CARD'S GAME VERSION
-    // Filter out only locations that include this card's specific game title in its version_details array
     const filteredLocations = rawEncounters.filter((loc) => {
       return loc.version_details.some((detail) =>
         game.internalVersionKeys.includes(detail.version.name),

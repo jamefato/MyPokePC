@@ -525,9 +525,9 @@ body {
 }
 
 /* SIDE COLUMNS (Invisible but holding space) */
-.side-column {
-  /* They will sit empty for now, pushing your main content dead-center */
-}
+/*.side-column {
+ empty for now
+}*/
 
 /* THE FILTER BAR */
 .feed-header-bar {

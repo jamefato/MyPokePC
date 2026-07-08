@@ -1,4 +1,4 @@
-// Listens for enter pressed
+// Listens for enter pressed (no button needed)
 const enterSearch = document.getElementById("poke-search");
 
 enterSearch.addEventListener('keydown', function(event) {

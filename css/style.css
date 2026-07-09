@@ -247,11 +247,17 @@ body {
 .status-icons {
   display: flex;
   gap: 6px;
-  /* Puts breathing room between your tiny status images */
+  /* Small space between tiny status images */
 }
 
 .icon {
-  font-size: 16px; /* Adjust size based on your images later */
+  font-size: 16px; /* Adjust size based on images later */
+}
+
+.add-button {
+  position: absolute;
+  right: 10px;
+  top: 185px;
 }
 
 .fav-button {

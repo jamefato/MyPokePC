@@ -39,7 +39,6 @@
             id="pokemon"
             autocomplete="off"
           />
-
           <span class="search-icon" onclick="search()">
             <img src="assets/icons8-search-24.png" alt="search" />
           </span>
@@ -80,7 +79,7 @@
 
           <div class="form-group">
             <label for="input-gender">Gender</label>
-            <div class="custom-dropdown">
+            <div class="custom-dropdown" id="gender-dropdown">
               <input
                 type="text"
                 id="input-gender"
@@ -88,7 +87,7 @@
                 autocomplete="off"
               />
 
-              <ul class="dropdown-results">
+              <ul class="dropdown-results" id="gender-results">
                 <li class="dropdown-item">Male</li>
                 <li class="dropdown-item">Female</li>
                 <li class="dropdown-item">Genderless</li>
@@ -98,14 +97,14 @@
           <div class="form-group">
             <label for="input-nature">Nature</label>
 
-            <div class="custom-dropdown">
+            <div class="custom-dropdown" id="nature-dropdown">
               <input
                 type="text"
                 id="input-nature"
                 placeholder="Search or select a nature..."
                 autocomplete="off"
               />
-              <ul class="dropdown-results">
+              <ul class="dropdown-results" id="nature-results">
                 <li class="dropdown-item">Adamant</li>
                 <li class="dropdown-item">Bashful</li>
                 <li class="dropdown-item">Bold</li>
@@ -136,7 +135,7 @@
           </div>
           <div class="form-group">
             <label for="input-generation">Generation</label>
-            <div class="custom-dropdown">
+            <div class="custom-dropdown" id="generation-dropdown">
               <input
                 type="text"
                 id="input-generation"
@@ -144,7 +143,7 @@
                 autocomplete="off"
               />
 
-              <ul class="dropdown-results">
+              <ul class="dropdown-results" id="generation-results">
                 <li class="dropdown-item">Generation 1</li>
                 <li class="dropdown-item">Generation 2</li>
                 <li class="dropdown-item">Generation 3</li>
@@ -160,7 +159,7 @@
           <div class="form-group">
             <label for="input-game">Game</label>
 
-            <div class="custom-dropdown">
+            <div class="custom-dropdown" id="game-dropdown">
               <input
                 type="text"
                 id="input-game"
@@ -168,7 +167,7 @@
                 autocomplete="off"
               />
 
-              <ul class="dropdown-results">
+              <ul class="dropdown-results" id="game-results">
                 <li class="dropdown-item">Omega Ruby</li>
                 <li class="dropdown-item">Alpha Sapphire</li>
                 <li class="dropdown-item">X</li>
@@ -181,7 +180,7 @@
           <div class="form-group">
             <label for="input-location">Location</label>
 
-            <div class="custom-dropdown">
+            <div class="custom-dropdown" id="location-dropdown">
               <input
                 type="text"
                 id="input-location"
@@ -189,7 +188,7 @@
                 autocomplete="off"
               />
 
-              <ul class="dropdown-results">
+              <ul class="dropdown-results" id="location-results">
                 <li class="dropdown-item">Route 205</li>
                 <li class="dropdown-item">Route 206</li>
                 <li class="dropdown-item">Route 207</li>

@@ -1,21 +1,18 @@
-// Listens for enter pressed (no button needed to search for mons)
-const enterSearch = document.getElementById("pokemon");
-
-console.log(enterSearch);
-
-enterSearch.addEventListener('keydown', function(event) {
-    if (event.key == 'Enter') {
-        self.searchPage();
-    }
-});
-
 //drop down menu
 let globalPokemonList = []; // Stores master directory in memory
 
+// Handles various events
+
 document.addEventListener("DOMContentLoaded", async () => {
-  const inputField = document.getElementById("pokemon");
   const dropdownMenu = document.getElementById("custom-dropdown");
-  if (!inputField || !dropdownMenu) return;
+  const dropdownGend = document.getElementById("gender-results");
+  const dropdownNat = document.getElementById("nature-results");
+  const dropdownGen = document.getElementById("generation-results");
+  const dropdownGam = document.getElementById("game-results");
+  const dropdownLoc = document.getElementById("location-results");
+
+  const monInputField = document.getElementById("pokemon");
+  let inputField;
 
   try {
     const response = await fetch(
@@ -29,8 +26,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to build custom autocomplete index:", e);
   }
 
-  inputField.addEventListener("input", () => {
-    const query = inputField.value.trim().toLowerCase();
+  // Creates the dropdown menu when searching for pokemon
+
+  monInputField.addEventListener("input", () => {
+    const query = monInputField.value.trim().toLowerCase();
 
     if (!query) {
       dropdownMenu.classList.add("hidden");
@@ -59,12 +58,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     dropdownMenu.classList.remove("hidden");
   });
 
-  dropdownMenu.addEventListener("click", (e) => {
-    const clickedItem = e.target.closest(".dropdown-item");
-    if (!clickedItem) return;
+  monInputField.addEventListener('keydown', function(event) {
+    if (event.key == 'Enter') {
+        self.searchPage();
+    }
+  });
 
-    const selectedValue = clickedItem.getAttribute("data-value");
-    inputField.value = selectedValue;
+  // Handles all types of dropdown menus on the page
+
+  dropdownMenu.addEventListener("click", (event) => {
+    self.dropdownClicked(monInputField, event);
     dropdownMenu.classList.add("hidden");
 
     const searchBtn =
@@ -75,12 +78,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  dropdownGend.addEventListener("mousedown", (event) => {
+    self.dropdownClicked(inputField, event);
+  });
+  dropdownNat.addEventListener("mousedown", (event) => {
+    self.dropdownClicked(inputField, event);
+  });
+  dropdownGen.addEventListener("mousedown", (event) => {
+    self.dropdownClicked(inputField, event);
+  });
+  dropdownGam.addEventListener("mousedown", (event) => {
+    self.dropdownClicked(inputField, event);
+  });
+  dropdownLoc.addEventListener("mousedown", (event) => {
+    self.dropdownClicked(inputField, event);
+  });
+
   document.addEventListener("click", (e) => {
-    if (!inputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    // Updates the current inputField on any click
+    inputField = document.getElementById(document.activeElement.id);
+
+    console.log(inputField);
+
+    if (!monInputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.add("hidden");
     }
   });
 });
+
+// Adds dropdown text into input text 
+
+function dropdownClicked(inputV, event) {
+  console.log("Clicked a dropdown item!");
+  const clickedItem = event.target.closest(".dropdown-item");
+  console.log(clickedItem);
+  if (!clickedItem) return;
+
+  let selectedValue = clickedItem.innerText;
+  if (clickedItem.getAttribute("data-value")) {
+    selectedValue = clickedItem.getAttribute("data-value");
+  }
+  inputV.value = selectedValue;
+}
 
 // Switches files and searches for specified pokemon
 

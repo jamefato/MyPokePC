@@ -452,7 +452,7 @@ body {
 }
 
 /* THE MAGIC TRIGGER: When the user clicks the input field, snap the menu open! */
-.custom-dropdown:focus-within .dropdown-results {
+.custom-dropdown:focus-within .dropdown-results{
   display: block;
 }
 

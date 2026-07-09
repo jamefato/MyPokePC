@@ -1,533 +1,535 @@
 * {
-  font-family: "Silkscreen", monospace;
+    font-family: "Silkscreen", monospace;
 }
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #e6ede4;
+    margin: 0;
+    padding: 0;
+    background-color: #e6ede4;
 }
 
 .wrapper {
-  max-width: 1600px; /* Prevents the website from stretching too wide on massive monitors */
-  margin: 0 auto; /* The ultimate trick: 'auto' perfectly centers the box on the screen */
-  padding: 20px 30px 0;
+    max-width: 1600px; /* Prevents the website from stretching too wide on massive monitors */
+    margin: 0 auto; /* The ultimate trick: 'auto' perfectly centers the box on the screen */
+    padding: 20px 30px 0;
 }
 .navbar {
-  width: 100%;
-  display: flex;
-  justify-content: space-between; /* Pushes left group and right group apart */
-  align-items: center;
-  box-sizing: border-box;
-  /* Background styling using your transparent black technique */
-  background-color: rgb(80, 142, 56);
-  padding: 15px 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Pushes left group and right group apart */
+    align-items: center;
+    box-sizing: border-box;
+    /* Background styling using your transparent black technique */
+    background-color: rgb(80, 142, 56);
+    padding: 15px 40px;
 }
 
 .nav-left {
-  display: flex;
-  align-items: center;
-  gap: 40px; /* Puts healthy space between the logo and the link list */
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Puts healthy space between the logo and the link list */
 }
 
 .nav-logo {
-  font-family: "Pixelify Sans", sans-serif;
-  font-weight: bold;
-  font-size: 20px;
-  color: white;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
 }
 
 .nav-links {
-  display: flex;
-  gap: 24px; /* Spaces out Dex, Target, and Settings horizontally */
-  list-style: none; /* Removes regular bullet points */
-  margin: 0;
-  padding: 0;
+    display: flex;
+    gap: 24px; /* Spaces out Dex, Target, and Settings horizontally */
+    list-style: none; /* Removes regular bullet points */
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 16px;
-  color: white;
-  transition: color 0.2s ease;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    color: white;
+    transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: rgba(255, 255, 255, 0.5); /* Darkens slightly when hovered */
+    color: rgba(255, 255, 255, 0.5); /* Darkens slightly when hovered */
 }
 .search-section {
-  display: flex;
-  justify-content: center; /* Centers the search bar horizontally */
-  padding: 10px 20px;
-  background-color: rgb(80, 142, 56);
+    display: flex;
+    justify-content: center; /* Centers the search bar horizontally */
+    padding: 10px 20px;
+    background-color: rgb(80, 142, 56);
 }
 .search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  /* FIXED: Set the container to take up exactly half the screen */
-  width: 50%;
-  max-width: none; /* Removes any previous maximum limits holding it back */
+    /* FIXED: Set the container to take up exactly half the screen */
+    width: 50%;
+    max-width: none; /* Removes any previous maximum limits holding it back */
 }
 /* The actual Search Input Box wrapper */
 .search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 50%;
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px; /* Gives it a clean pill shape */
-  padding: 10px 20px;
-  gap: 10px;
-  width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 50%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px; /* Gives it a clean pill shape */
+    padding: 10px 20px;
+    gap: 10px;
+    width: 100%;
 }
 
 .search-box input {
-  border: none;
-  background: none;
-  width: 100%;
-  font-size: 15px;
-  outline: none; /* Removes the ugly default browser outline when clicked */
+    border: none;
+    background: none;
+    width: 100%;
+    font-size: 15px;
+    outline: none; /* Removes the ugly default browser outline when clicked */
 }
 .search-icon {
-  transform: scale(0.8);
+    transform: scale(0.8);
 }
 
 /* --- RETRO DROPDOWN DESIGN --- */
 .custom-dropdown-menu {
-  position: absolute;
-  top: 100%; /* Positions it perfectly at the bottom edge of the search box */
-  left: 0;
-  width: 100%;
-  max-height: 250px;
-  overflow-y: auto;
-  background-color: #fcfbfa;
-  border: 2px solid #333;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  z-index: 9999; /* Forces it to sit on top of any page content below it */
+    position: absolute;
+    top: 100%; /* Positions it perfectly at the bottom edge of the search box */
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: #fcfbfa;
+    border: 2px solid #333;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 9999; /* Forces it to sit on top of any page content below it */
 }
 
 /* List item row layout */
 .dropdown-item {
-  font-family:
-    "Silkscreen", monospace; /* Adjust this to match your layout's font */
-  font-size: 12px;
-  padding: 10px 14px;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.1s ease;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+    font-family:
+        "Silkscreen", monospace; /* Adjust this to match your layout's font */
+    font-size: 12px;
+    padding: 10px 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
 }
 
 .dropdown-item:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 /* Hover dynamic highlight state */
 .dropdown-item:hover {
-  background-color: rgb(
-    80,
-    142,
-    56
-  ); /* A nice green highlight to match your aesthetic */
-  color: white;
+    background-color: rgb(
+        80,
+        142,
+        56
+    ); /* A nice green highlight to match your aesthetic */
+    color: white;
 }
 
 /* Hide helper class state */
 .custom-dropdown-menu.hidden {
-  display: none;
+    display: none;
 }
 .grid {
-  display: grid;
-  /* This tells the browser: "Make columns that are 350px wide. If you run out of screen space, wrap the cards to the next row automatically!" */
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 15px;
+    display: grid;
+    /* Raised the minimum column size to 450px so a 4th column won't generate too early */
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 20px; /* Gives the cards slightly more room to breathe */
+    width: 100%;
 }
 .card {
-  display: grid;
-  /* Left column for sprite (150px), right column for everything else (1fr) */
-  grid-template-columns: 140px 1fr;
-  gap: 10px;
-  align-items: center; /* Centers the sprite vertically against the right side content */
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 10px;
+    align-items: center;
 
-  border-radius: 16px;
-  padding: 20px;
-  background-color: #cecfae;
-  position: relative;
-  /* Keeps the card a locked, stable size */
-  width: 480px;
-  min-height: 250px;
-  box-sizing: border-box;
+    border-radius: 16px;
+    padding: 20px;
+    background-color: #cecfae;
+    position: relative;
+
+    /* --- FIXES ARE RIGHT HERE --- */
+    width: 100%; /* Allows the card to naturally shrink to fit its grid space */
+    max-width: 480px; /* Caps it from blowing up too massive on huge monitors */
+    min-height: 250px;
+    box-sizing: border-box;
 }
 .pokedex-number {
-  position: absolute;
-  top: 15px;
-  right: 18px;
-  font-size: 16px;
-  color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Muted color so it doesn't distract from the name */
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.55
-  ); /* Clean white overlay transparency */
-  padding: 8px 8px;
-  border-radius: 10px;
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    font-size: 16px;
+    color: rgba(
+        0,
+        0,
+        0,
+        0.5
+    ); /* Muted color so it doesn't distract from the name */
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.55
+    ); /* Clean white overlay transparency */
+    padding: 8px 8px;
+    border-radius: 10px;
 }
 .sprite {
-  width: 100%;
-  height: auto;
-  transform: scale(1.6);
+    width: 100%;
+    height: auto;
+    transform: scale(1.6);
 
-  /* Optional: If scaling makes the pixel art look blurry, add this line: */
-  image-rendering: pixelated;
+    /* Optional: If scaling makes the pixel art look blurry, add this line: */
+    image-rendering: pixelated;
 }
 .content {
-  display: flex;
-  flex-direction: column; /* Stacks the name on top of the info grid */
-  height: 100%;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: column; /* Stacks the name on top of the info grid */
+    height: 100%;
+    justify-content: flex-start;
 }
 .pokemon_name {
-  font-family: "Pixelify Sans", sans-serif;
-  margin: 0 0 6px 0;
-  font-size: 26px;
+    font-family: "Pixelify Sans", sans-serif;
+    margin: 0 0 6px 0;
+    font-size: 26px;
 
-  padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 .pokemon-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  gap: 6px 15px; /* 12px vertical space between rows, 15px horizontal space */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 6px 15px; /* 12px vertical space between rows, 15px horizontal space */
 }
 
 /* Each individual info box */
 .info-group {
-  display: flex;
-  flex-direction: column; /* Forces value to sit directly under the label */
-  min-width: 0; /* Magic CSS line: prevents long text from physically stretching the grid column */
+    display: flex;
+    flex-direction: column; /* Forces value to sit directly under the label */
+    min-width: 0; /* Magic CSS line: prevents long text from physically stretching the grid column */
 }
 
 /* The tiny label on top */
 .info-label {
-  font-family: "Pixelify Sans", sans-serif;
-  font-size: 12px; /* Makes it small */
-  line-height: 1;
-  text-transform: uppercase; /* Looks super clean in all caps */
-  color: rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.5px; /* Adds nice professional spacing between letters */
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 12px; /* Makes it small */
+    line-height: 1;
+    text-transform: uppercase; /* Looks super clean in all caps */
+    color: rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px; /* Adds nice professional spacing between letters */
 }
 
 /* The actual content on the bottom */
 .info-value {
-  font-size: 15px;
-  font-weight: 400;
-  /* Makes the actual data stand out more than the label */
-  color: #111;
-  line-height: 1; /* Keeps lines tight if the text wraps to a second row */
-  word-wrap: break-word;
+    font-size: 15px;
+    font-weight: 400;
+    /* Makes the actual data stand out more than the label */
+    color: #111;
+    line-height: 1; /* Keeps lines tight if the text wraps to a second row */
+    word-wrap: break-word;
 }
 .card-footer {
-  display: flex;
-  gap: 6px;
-  padding-top: 6px;
-  margin-top: auto;
+    display: flex;
+    gap: 6px;
+    padding-top: 6px;
+    margin-top: auto;
 
-  /* Forces the footer to span across both columns completely */
-  width: 100%;
+    /* Forces the footer to span across both columns completely */
+    width: 100%;
 }
 .status-icons {
-  display: flex;
-  gap: 6px;
-  /* Small space between tiny status images */
+    display: flex;
+    gap: 6px;
+    /* Small space between tiny status images */
 }
 
 .icon {
-  font-size: 16px; /* Adjust size based on images later */
+    font-size: 16px; /* Adjust size based on images later */
 }
 
 .add-button {
-  position: absolute;
-  right: 10px;
-  top: 185px;
+    position: absolute;
+    right: 10px;
+    top: 185px;
 }
 
 .fav-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 0;
-  transition: transform 0.1s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+    transition: transform 0.1s ease;
 }
 
 /* Quick hover effect for your favorite button */
 .fav-button:hover {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 /* --- THE BLURRED OVERLAY --- */
 .modal-overlay {
-  /* TEMPORARY: Change to 'flex' to view your work, change back to 'none' to hide it */
-  display: none;
+    /* TEMPORARY: Change to 'flex' to view your work, change back to 'none' to hide it */
+    display: none;
 
-  /* Forces it to sit perfectly on top of everything else on the screen */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999; /* Makes sure it is layered on top of your grid and nav bar */
+    /* Forces it to sit perfectly on top of everything else on the screen */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999; /* Makes sure it is layered on top of your grid and nav bar */
 
-  /* Center the form window precisely */
-  justify-content: center;
-  align-items: center;
+    /* Center the form window precisely */
+    justify-content: center;
+    align-items: center;
 
-  /* THE MAGIC: A darktint background combined with a modern browser blur filter */
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
+    /* THE MAGIC: A darktint background combined with a modern browser blur filter */
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
 }
 
 /* --- THE MODAL BOX --- */
 .modal-box {
-  background-color: #f4f1ea;
-  border: 3px solid #333;
-  border-radius: 16px;
-  padding: 24px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    background-color: #f4f1ea;
+    border: 3px solid #333;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
-  /* NEW: Restrict the overall height so it never cuts off the screen */
-  max-height: 85vh; /* Takes up a maximum of 85% of the viewport height */
-  display: flex;
-  flex-direction: column; /* Stacks header, form, and actions vertically */
+    /* NEW: Restrict the overall height so it never cuts off the screen */
+    max-height: 85vh; /* Takes up a maximum of 85% of the viewport height */
+    display: flex;
+    flex-direction: column; /* Stacks header, form, and actions vertically */
 }
 
 /* --- THE INTERNAL SCROLL ZONE --- */
 .modal-form {
-  overflow-y: auto;
+    overflow-y: auto;
 
-  /* 1. THE TRICK: Give the container extra room on the right side */
-  padding-right: 16px;
+    /* 1. THE TRICK: Give the container extra room on the right side */
+    padding-right: 16px;
 
-  /* 2. Ensured full width layout alignment */
-  width: 100%;
-  box-sizing: border-box;
+    /* 2. Ensured full width layout alignment */
+    width: 100%;
+    box-sizing: border-box;
 
-  margin-bottom: 16px;
-  -webkit-overflow-scrolling: touch;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* --- RETRO SCROLLBAR STYLING --- */
 /* This styles the scrollbar inside the form to match your retro UI */
 .modal-form::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .modal-form::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 /* Keeps the sharp retro scroll handle */
 .modal-form::-webkit-scrollbar-thumb {
-  background-color: #333;
-  border: 2px solid #f4f1ea; /* Matches your modal background color to pad it */
-  border-radius: 4px;
+    background-color: #333;
+    border: 2px solid #f4f1ea; /* Matches your modal background color to pad it */
+    border-radius: 4px;
 }
 .modal-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px dashed rgba(0, 0, 0, 0.1); /* Nice retro separator line */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgba(0, 0, 0, 0.1); /* Nice retro separator line */
 }
 .modal-sprite-container {
-  position: relative; /* Crucial: Acts as an anchor point for the absolute image */
-  width: 80px; /* Stays locked at this size so it never messes up the modal text */
-  height: 80px;
-  background-color: rgba(0, 0, 0, 0.04);
-  border-radius: 50%;
-  flex-shrink: 0; /* Stops the circle from getting squeezed */
+    position: relative; /* Crucial: Acts as an anchor point for the absolute image */
+    width: 80px; /* Stays locked at this size so it never messes up the modal text */
+    height: 80px;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 50%;
+    flex-shrink: 0; /* Stops the circle from getting squeezed */
 }
 .modal-sprite {
-  position: absolute; /* Takes the image out of the layout flow so it can't push text away */
+    position: absolute; /* Takes the image out of the layout flow so it can't push text away */
 
-  /* Blow up the image size to zoom past the empty space */
-  width: 150px;
-  height: 150px;
+    /* Blow up the image size to zoom past the empty space */
+    width: 150px;
+    height: 150px;
 
-  /* Center the oversized image precisely inside the 56px container */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    /* Center the oversized image precisely inside the 56px container */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-  /* CRUCIAL FOR RETRO SPRITES */
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+    /* CRUCIAL FOR RETRO SPRITES */
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 .modal-title-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .modal-subtitle {
-  font-family: "Pixelify Sans", sans-serif;
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: rgba(0, 0, 0, 0.4);
-  font-weight: bold;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: bold;
 }
 
 .modal-title {
-  font-family: "Pixelify Sans", sans-serif;
-  font-size: 30px;
-  margin: 0;
-  color: #333;
-  line-height: 1; /* Crushes extra vertical space just like the main card */
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 30px;
+    margin: 0;
+    color: #333;
+    line-height: 1; /* Crushes extra vertical space just like the main card */
 }
 
 /* --- FORM LAYOUT --- */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
-  font-family: "Pixelify Sans", sans-serif;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
 }
 .custom-dropdown {
-  position: relative;
-  width: 100%;
+    position: relative;
+    width: 100%;
 }
 .custom-dropdown input {
-  width: 100%; /* Fills up 100% of the .custom-dropdown wrapper */
-  box-sizing: border-box; /* Crucial: Prevents padding/borders from breaking the width calculation */
+    width: 100%; /* Fills up 100% of the .custom-dropdown wrapper */
+    box-sizing: border-box; /* Crucial: Prevents padding/borders from breaking the width calculation */
 
-  /* Keep your existing padding, font, and border rules below */
-  font-family: "Pixelify Sans", sans-serif;
-  padding: 10px 14px;
-  font-size: 16px;
-  border: 2px solid #333;
-  border-radius: 8px;
-  background-color: #fff;
-  outline: none;
+    /* Keep your existing padding, font, and border rules below */
+    font-family: "Pixelify Sans", sans-serif;
+    padding: 10px 14px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background-color: #fff;
+    outline: none;
 }
 /* THE POPUP MENU: Styled to look like an official game menu */
 .dropdown-results {
-  position: absolute;
-  top: 105%; /* Sits cleanly right under the input field */
-  left: 0;
-  width: 100%;
-  max-height: 160px; /* Limits size and creates a clean scrollbar */
-  overflow-y: auto;
+    position: absolute;
+    top: 105%; /* Sits cleanly right under the input field */
+    left: 0;
+    width: 100%;
+    max-height: 160px; /* Limits size and creates a clean scrollbar */
+    overflow-y: auto;
 
-  /* Matches your beautiful card/modal theme perfectly */
-  background-color: #f4f1ea;
-  border: 2px solid #333;
-  border-radius: 8px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* Matches your beautiful card/modal theme perfectly */
+    background-color: #f4f1ea;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
-  /* THE MAGIC: Hide it by default */
-  display: none;
+    /* THE MAGIC: Hide it by default */
+    display: none;
 }
 
 /* THE MAGIC TRIGGER: When the user clicks the input field, snap the menu open! */
 .custom-dropdown:focus-within .dropdown-results {
-  display: block;
+    display: block;
 }
 
 /* THE INDIVIDUAL MENU ITEMS */
 .dropdown-item {
-  padding: 10px 14px;
-  font-size: 14px;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.1s ease;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
 }
 
 /* Hover style: Pick a nice retro selection color (like your green brand color!) */
 .dropdown-item:hover {
-  background-color: rgb(80, 142, 56);
-  color: white;
+    background-color: rgb(80, 142, 56);
+    color: white;
 }
 
 /* Custom retro scrollbar styling for the menu list */
 .dropdown-results::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 .dropdown-results::-webkit-scrollbar-thumb {
-  background-color: #333;
-  border-radius: 4px;
+    background-color: #333;
+    border-radius: 4px;
 }
 .form-group input {
-  line-height: 1;
-  padding: 10px 14px;
-  font-size: 16px;
-  border: 2px solid #333;
-  border-radius: 8px;
-  background-color: #fff;
-  outline: none;
+    line-height: 1;
+    padding: 10px 14px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background-color: #fff;
+    outline: none;
 }
 
 /* --- BUTTON ZONE --- */
 .modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
 }
 
 .modal-actions button {
-  font-family: "Pixelify Sans", sans-serif;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  border: 2px solid #333;
-  border-radius: 8px;
-  cursor: pointer;
+    font-family: "Pixelify Sans", sans-serif;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .btn-cancel {
-  background-color: transparent;
-  color: #555;
+    background-color: transparent;
+    color: #555;
 }
 
 .btn-submit {
-  background-color: rgb(80, 142, 56); /* Matches your green theme header! */
-  color: white;
+    background-color: rgb(80, 142, 56); /* Matches your green theme header! */
+    color: white;
 }
 
 /*HERE STARTS THE SEARCH PAGE*/
 .info-page-layout {
-  display: grid;
-  /* Changes the center column to exactly 70% of the screen width.
+    display: grid;
+    /* Changes the center column to exactly 70% of the screen width.
      The 1.5fr spaces on the left/right split the remaining 30% evenly! 
   */
-  grid-template-columns: 1.5fr 60% 1.5fr;
-  gap: 24px;
-  width: 100%;
-  padding: 0 24px;
-  box-sizing: border-box;
+    grid-template-columns: 1.5fr 60% 1.5fr;
+    gap: 24px;
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
 }
 
 /* SIDE COLUMNS (Invisible but holding space) */
@@ -537,417 +539,417 @@ body {
 
 /* THE FILTER BAR */
 .feed-header-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
-  width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    width: 100%;
 }
 
 .custom-filter-dropdown {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 /* Clear Minimal Trigger Button */
 .filter-trigger-btn {
-  font-family: "Silkscreen", monospace;
-  background: transparent;
-  border: none;
-  color: #333;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  user-select: none;
+    font-family: "Silkscreen", monospace;
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    user-select: none;
 }
 
 .filter-trigger-btn:hover {
-  opacity: 0.7;
+    opacity: 0.7;
 }
 
 /* Custom Filter Menu (Hidden by default, shows on focus) */
 .filter-menu {
-  position: absolute;
-  top: 110%;
-  right: 0; /* Aligns flush with the right side of the filter text */
-  background-color: #f4f1ea;
-  border: 2px solid #333;
-  border-radius: 8px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 160px;
-  z-index: 20;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  display: none;
+    position: absolute;
+    top: 110%;
+    right: 0; /* Aligns flush with the right side of the filter text */
+    background-color: #f4f1ea;
+    border: 2px solid #333;
+    border-radius: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 160px;
+    z-index: 20;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    display: none;
 }
 
 /* CSS Click Trigger using focus-within */
 .custom-filter-dropdown:focus-within .filter-menu {
-  display: block;
+    display: block;
 }
 
 .filter-item {
-  font-family: "Silkscreen", monospace;
-  padding: 10px 14px;
-  font-size: 12px;
-  color: #333;
-  cursor: pointer;
+    font-family: "Silkscreen", monospace;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
 }
 
 .filter-item:hover {
-  background-color: rgb(80, 142, 56);
-  color: white;
+    background-color: rgb(80, 142, 56);
+    color: white;
 }
 
 /* --- GAME FEED CARD INTERNAL LAYOUT --- */
 .pokemon-game-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 16px; /* Creates a clean, distinct gap between each little card */
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Creates a clean, distinct gap between each little card */
+    width: 100%;
 }
 
 /* THE ACCORDION TURNED INTO A LITTLE CARD */
 .game-entry-card {
-  background-color: #f4f1ea;
-  border: 2px solid #333;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1); /* Nice little retro shadow */
-  transition:
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
+    background-color: #f4f1ea;
+    border: 2px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1); /* Nice little retro shadow */
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
 }
 
 /* Subtle bounce effect when hovering over a closed card */
 .game-entry-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* THE CARD HEADER CONTAINER */
 .game-entry-header {
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
 }
 .game-entry-header::-webkit-details-marker {
-  display: none;
+    display: none;
 }
 
 /* Keep your text group stacked cleanly inside the card */
 .header-main-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 .game-mini-sprite {
-  /* Scale it up to a nice, prominent size */
-  width: 80px;
-  height: 80px;
+    /* Scale it up to a nice, prominent size */
+    width: 80px;
+    height: 80px;
 
-  /* CRUCIAL: Stops the browser from blurring the upscaled pixels */
-  image-rendering: pixelated; /* For Chrome, Safari, and Edge */
+    /* CRUCIAL: Stops the browser from blurring the upscaled pixels */
+    image-rendering: pixelated; /* For Chrome, Safari, and Edge */
 
-  /* Keeps the image perfectly proportional within its box boundaries */
-  object-fit: contain;
-  transform: scale(1.4);
+    /* Keeps the image perfectly proportional within its box boundaries */
+    object-fit: contain;
+    transform: scale(1.4);
 }
 .title-text-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .game-title {
-  font-family: "Pixelify Sans", sans-serif;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
 }
 
 .generation-subtitle {
-  font-family: "Silkscreen", monospace;
-  font-size: 11px;
-  color: #333;
-  opacity: 0.5;
+    font-family: "Silkscreen", monospace;
+    font-size: 11px;
+    color: #333;
+    opacity: 0.5;
 }
 
 /* --- WHEN THE CARD IS EXPANDED/OPENED --- */
 .game-entry-card[open] {
-  transform: none; /* Disables hover bounce while reading */
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+    transform: none; /* Disables hover bounce while reading */
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* --- ACCORDION INNER CONTENT LAYOUT --- */
 .game-entry-content {
-  padding: 20px;
-  border-top: 2px dashed #333;
-  background-color: #fcfbfa;
+    padding: 20px;
+    border-top: 2px dashed #333;
+    background-color: #fcfbfa;
 }
 .form-tabs-container {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-  border-bottom: 2px solid #333;
-  padding-bottom: 1px;
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 1px;
 }
 
 .form-layout-tab {
-  font-family: "Silkscreen", monospace;
-  font-size: 12px;
-  padding: 6px 14px;
-  background-color: #eae7df;
-  border: 2px solid #333;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  color: #555;
-  transition: all 0.1s ease;
+    font-family: "Silkscreen", monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    background-color: #eae7df;
+    border: 2px solid #333;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.1s ease;
 }
 
 .form-layout-tab:hover {
-  background-color: #f4f1ea;
-  color: #111;
+    background-color: #f4f1ea;
+    color: #111;
 }
 
 .form-layout-tab.active-tab {
-  background-color: #fcfbfa; /* Matches card inner content color background */
-  color: #111;
-  font-weight: bold;
-  position: relative;
-  top: 2px; /* Pulls tab line down to mask the container border ring neatly */
-  padding-bottom: 8px;
+    background-color: #fcfbfa; /* Matches card inner content color background */
+    color: #111;
+    font-weight: bold;
+    position: relative;
+    top: 2px; /* Pulls tab line down to mask the container border ring neatly */
+    padding-bottom: 8px;
 }
 /* 3-Column Responsive Dashboard */
 .info-page-layout {
-  display: grid;
-  grid-template-columns: 2fr 60% 2fr;
-  gap: 24px;
-  width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 60% 2fr;
+    gap: 24px;
+    width: 100%;
 }
 
 /* --- THE NEW RETRO TAB ROW LAYOUT --- */
 .form-tabs-container {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-  border-bottom: 2px solid #333;
-  padding-bottom: 1px;
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 1px;
 }
 
 .form-layout-tab {
-  font-family: "Silkscreen", monospace;
-  font-size: 12px;
-  padding: 6px 14px;
-  background-color: #eae7df;
-  border: 2px solid #333;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  color: #555;
-  transition: all 0.1s ease;
+    font-family: "Silkscreen", monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    background-color: #eae7df;
+    border: 2px solid #333;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.1s ease;
 }
 
 .form-layout-tab:hover {
-  background-color: #f4f1ea;
-  color: #111;
+    background-color: #f4f1ea;
+    color: #111;
 }
 
 .form-layout-tab.active-tab {
-  background-color: #fcfbfa; /* Matches card inner content background color */
-  color: #111;
-  font-weight: bold;
-  position: relative;
-  top: 2px; /* Pulls tab line down to mask the container border ring neatly */
-  padding-bottom: 8px;
+    background-color: #fcfbfa; /* Matches card inner content background color */
+    color: #111;
+    font-weight: bold;
+    position: relative;
+    top: 2px; /* Pulls tab line down to mask the container border ring neatly */
+    padding-bottom: 8px;
 }
 .gender-split-subrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
 .gender-split-subrow img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  image-rendering: pixelated;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    image-rendering: pixelated;
 }
 
 .gender-split-subrow span {
-  font-size: 10px;
-  font-weight: bold;
-  opacity: 0.7;
+    font-size: 10px;
+    font-weight: bold;
+    opacity: 0.7;
 }
 /* --- THE 3-COLUMN DASHBOARD GRID --- */
 .game-entry-content {
-  padding: 20px;
-  border-top: 2px dashed #333;
-  background-color: #fcfbfa;
+    padding: 20px;
+    border-top: 2px dashed #333;
+    background-color: #fcfbfa;
 }
 
 .info-dashboard-grid {
-  display: grid;
-  /* Left: Sprites, Middle: Stats, Right: Encounter Scroll */
-  grid-template-columns: 1.2fr 1fr 1fr;
-  gap: 20px;
-  width: 100%;
+    display: grid;
+    /* Left: Sprites, Middle: Stats, Right: Encounter Scroll */
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
 }
 
 .dashboard-col {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
 /* SECTION TITLES (Tiny retro headers) */
 .data-label {
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  color: #333;
-  opacity: 0.6;
-  margin-bottom: 8px;
-  display: block;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: #333;
+    opacity: 0.6;
+    margin-bottom: 8px;
+    display: block;
 }
 
 .flavor-text.mini-text {
-  font-size: 11px;
-  line-height: 1.4;
-  color: #444;
-  font-style: italic;
-  background: rgba(0, 0, 0, 0.02);
-  padding: 6px 8px;
-  border-radius: 6px;
-  border-left: 3px solid rgb(80, 142, 56);
+    font-size: 11px;
+    line-height: 1.4;
+    color: #444;
+    font-style: italic;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 6px 8px;
+    border-radius: 6px;
+    border-left: 3px solid rgb(80, 142, 56);
 }
 
 /* --- THE BIG 2x2 SPRITE CABINET --- */
 .sprite-display-cabinet.big-cabinet {
-  display: grid;
-  grid-template-columns: repeat(
-    2,
-    1fr
-  ); /* Converts layout into a 2x2 square grid */
-  gap: 10px;
-  background: #f4f1ea;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #333;
+    display: grid;
+    grid-template-columns: repeat(
+        2,
+        1fr
+    ); /* Converts layout into a 2x2 square grid */
+    gap: 10px;
+    background: #f4f1ea;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #333;
 }
 
 .sprite-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px;
 }
 
 .sprite-box span {
-  font-size: 9px;
-  font-weight: bold;
-  color: #666;
-  margin-top: 2px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #666;
+    margin-top: 2px;
 }
 
 .dashboard-sprite {
-  width: 72px; /* Bigger sprite vault assets */
-  height: 72px;
-  object-fit: contain;
-  image-rendering: pixelated;
-  transform: scale(1.2);
+    width: 72px; /* Bigger sprite vault assets */
+    height: 72px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    transform: scale(1.2);
 }
 
 /* Highlights for shiny sprites */
 .sprite-box .shiny-bg {
-  background: #fffdf0;
+    background: #fffdf0;
 }
 .shiny-txt {
-  color: #b08d00 !important;
+    color: #b08d00 !important;
 }
 
 /* --- STATS TABLES --- */
 .stats-table-box {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.03);
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    margin-bottom: 10px;
 }
 
 .spec-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
-  padding-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+    padding-bottom: 4px;
 }
 .spec-row:last-child {
-  border: none;
-  padding: 0;
+    border: none;
+    padding: 0;
 }
 
 .spec-row .label {
-  color: #666;
+    color: #666;
 }
 .spec-row .val {
-  font-size: 14px;
-  color: #111;
+    font-size: 14px;
+    color: #111;
 }
 .spec-row .val-scroll {
-  color: #111;
-  text-align: right;
-  font-size: 11px;
+    color: #111;
+    text-align: right;
+    font-size: 11px;
 }
 .location-radar-box {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: #fbf9f3;
-  border: 2px solid #333;
-  border-radius: 8px;
-  padding: 10px;
-  max-height: 235px; /* Keeps the heights aligned with the sprite box */
-  overflow-y: auto; /* Allows scrolling inside the panel if there are many areas */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #fbf9f3;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 235px; /* Keeps the heights aligned with the sprite box */
+    overflow-y: auto; /* Allows scrolling inside the panel if there are many areas */
 }
 
 .location-row {
-  font-size: 11px;
-  font-weight: 500;
-  color: #444;
-  background: white;
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 11px;
+    font-weight: 500;
+    color: #444;
+    background: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .no-location {
-  font-size: 11px;
-  color: #888;
-  text-align: center;
-  padding: 20px 0;
-  font-style: italic;
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    padding: 20px 0;
+    font-style: italic;
 }
 
 /*font-family: "Pixelify Sans", sans-serif;*/

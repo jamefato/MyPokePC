@@ -1,21 +1,14 @@
-// Listens for enter pressed (no button needed to search for mons)
-const enterSearch = document.getElementById("pokemon");
-
-console.log(enterSearch);
-
-enterSearch.addEventListener('keydown', function(event) {
-    if (event.key == 'Enter') {
-        self.searchPage();
-    }
-});
-
-//drop down menu
-let globalPokemonList = []; // Stores master directory in memory
+// Handles all events (only when the page has loaded)
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const inputField = document.getElementById("pokemon");
+
+  let globalPokemonList = [];
+
   const dropdownMenu = document.getElementById("custom-dropdown");
-  if (!inputField || !dropdownMenu) return;
+  const monInputField = document.getElementById("pokemon");
+  let inputField;
+
+  // Gets pokemon name data
 
   try {
     const response = await fetch(
@@ -29,8 +22,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to build custom autocomplete index:", e);
   }
 
-  inputField.addEventListener("input", () => {
-    const query = inputField.value.trim().toLowerCase();
+  // Creates the dropdown menu when searching for pokemon
+
+  monInputField.addEventListener("input", () => {
+    const query = monInputField.value.trim().toLowerCase();
 
     if (!query) {
       dropdownMenu.classList.add("hidden");
@@ -59,12 +54,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     dropdownMenu.classList.remove("hidden");
   });
 
-  dropdownMenu.addEventListener("click", (e) => {
-    const clickedItem = e.target.closest(".dropdown-item");
-    if (!clickedItem) return;
+  monInputField.addEventListener('keydown', function(event) {
+    if (event.key == 'Enter') {
+        self.searchPage();
+    }
+  });
 
-    const selectedValue = clickedItem.getAttribute("data-value");
-    inputField.value = selectedValue;
+  // Handles all types of dropdown menus on the page
+
+  dropdownMenu.addEventListener("click", (event) => {
+    self.dropdownClicked(monInputField, event);
     dropdownMenu.classList.add("hidden");
 
     const searchBtn =
@@ -75,12 +74,63 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  document.addEventListener("mousedown", (event) => {
+    if (inputField && inputField != monInputField) {
+      self.dropdownClicked(inputField, event);
+    }
+  });
+
+  // Global click
+
   document.addEventListener("click", (e) => {
-    if (!inputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    // Updates the current inputField on any click
+    inputField = document.getElementById(document.activeElement.id);
+
+    if (!monInputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.add("hidden");
     }
   });
+
+  // Global screen hotkeys
+
+  document.addEventListener('keydown', (event) => {
+
+    const activeElement = document.activeElement;
+
+    // Opens the add pokemon menu
+
+    if (event.key.toUpperCase() == 'A') {
+      if (!activeElement.id) {
+        self.startAddMon();
+      }
+    }
+
+    // Exits the add pokemon menu when esc pressed
+
+    if (event.key == 'Escape') {
+        self.endAddMon(false);
+    }
+  });
+
+  // Calls displayCard() so pokemon are displayed on opening page
+
+  displayCard();
 });
+
+// Adds dropdown text into input text 
+
+function dropdownClicked(inputV, event) {
+  console.log("Clicked a dropdown item!");
+  const clickedItem = event.target.closest(".dropdown-item");
+  console.log(clickedItem);
+  if (!clickedItem) return;
+
+  let selectedValue = clickedItem.innerText;
+  if (clickedItem.getAttribute("data-value")) {
+    selectedValue = clickedItem.getAttribute("data-value");
+  }
+  inputV.value = selectedValue;
+}
 
 // Switches files and searches for specified pokemon
 
@@ -97,27 +147,6 @@ function startAddMon() {
   const screen = document.getElementById("add-pokemon-modal");
   screen.style.display = 'flex';
 }
-
-// Global screen hotkeys
-
-document.addEventListener('keydown', (event) => {
-
-  const activeElement = document.activeElement;
-
-  // Opens the add pokemon menu
-
-  if (event.key.toUpperCase() == 'A') {
-    if (!activeElement.id) {
-      self.startAddMon();
-    }
-  }
-
-  // Exits the add pokemon menu when esc pressed
-
-  if (event.key == 'Escape') {
-      self.endAddMon(false);
-  }
-});
 
 // Closes the menu to add a pokemon
 // Called on close/add button click or 'esc' pressed
@@ -205,7 +234,3 @@ function displayCard() {
     `
   }
 }
-
-// Calls displayCard() so pokemon are displayed on opening page
-
-displayCard();

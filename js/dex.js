@@ -1,5 +1,13 @@
 // Listens for enter pressed (no button needed to search for mons)
-const enterSearch = document.getElementById("poke-search");
+const enterSearch = document.getElementById("pokemon");
+
+console.log(enterSearch);
+
+enterSearch.addEventListener('keydown', function(event) {
+    if (event.key == 'Enter') {
+        self.searchPage();
+    }
+});
 
 //drop down menu
 let globalPokemonList = []; // Stores master directory in memory
@@ -63,30 +71,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("search-btn") ||
       document.querySelector('button[type="submit"]');
     if (searchBtn) {
-      searchBtn.click();
-    } else if (typeof search === "function") {
-      search();
+      self.searchPage();
     }
   });
 
   document.addEventListener("click", (e) => {
     if (!inputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.add("hidden");
+      
+      document.getElementById("pokemon").innerText = selectedValue;
+
+      console.log(document.getElementById("pokemon").value);
+      // searchPage();
     }
   });
-});
-
-enterSearch.addEventListener("keydown", function (event) {
-  if (event.key == "Enter") {
-    console.log("enter pressed!");
-    searchPage();
-  }
 });
 
 // Switches files and searches for specified pokemon
 
 function searchPage() {
-    localStorage.setItem("query", String(document.getElementById("poke-search").value));
+    localStorage.setItem("query", String(document.getElementById("pokemon").value));
     localStorage.setItem("search", true);
     window.location.href = "index.html";
 }

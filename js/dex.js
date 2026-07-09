@@ -1,4 +1,4 @@
-// Listens for enter pressed (no button needed)
+// Listens for enter pressed (no button needed to search for mons)
 const enterSearch = document.getElementById("poke-search");
 
 //drop down menu
@@ -86,11 +86,7 @@ enterSearch.addEventListener("keydown", function (event) {
 // Switches files and searches for specified pokemon
 
 function searchPage() {
-  console.log("SEARCHING FOR REAL");
-  localStorage.setItem(
-    "query",
-    String(document.getElementById("poke-search").value),
-  );
-  localStorage.setItem("search", true);
-  window.location.href = "index.html";
+    localStorage.setItem("query", String(document.getElementById("poke-search").value));
+    localStorage.setItem("search", true);
+    window.location.href = "index.html";
 }

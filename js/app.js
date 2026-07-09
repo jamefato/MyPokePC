@@ -79,30 +79,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// Listens for enter pressed (no button needed)
+// Listens for enter pressed (no button needed to search for mons)
 const enterSearch = document.getElementById("pokemon");
 
-enterSearch.addEventListener("keydown", function (event) {
-  if (event.key == "Enter") {
-    console.log("enter pressed!");
-    search();
-  }
+enterSearch.addEventListener('keydown', function(event) {
+    if (event.key == 'Enter') {
+        search();
+    }
 });
 
 // Runs on startup if coming from the dex page
-console.log(localStorage);
 const mon = localStorage.getItem("query");
 const startSearch = localStorage.getItem("search");
 
-console.log(mon);
-console.log(startSearch);
-
 if (startSearch) {
-  console.log("SEARCHING");
-  document.getElementById("pokemon").innerText = mon;
-  localStorage.removeItem("query");
-  localStorage.removeItem("search");
-  search();
+    document.getElementById("pokemon").innerText = mon;
+    localStorage.removeItem("query");
+    localStorage.removeItem("search");
+    search();
 }
 
 function search() {
@@ -112,8 +106,17 @@ function search() {
 
   let endpoint = url + query + name;
 
-  console.log(newPokemon);
-  console.log(endpoint);
+    // AI assisted in ensuring the cache function works properly
+    // We do not want to get in trouble for making too many requests...
+
+    const cachedMons = "pokeCache" + name;
+    const cached = localStorage.getItem(cachedMons);
+
+    if (cached) {
+        console.log("USING CACHE");
+        parseInfo(JSON.parse(cached));
+        return;
+    }
 
   // AI assisted in ensuring the cache function works properly
   // We do not want to get in trouble for making too many requests...

@@ -1,53 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&family=DotGothic16&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-
-  <body>
-    <nav class="navbar">
-      <div class="nav-left">
-        <div class="nav-logo"><a href="about.html">MyPokéPC</a></div>
-        <ul class="nav-links">
-          <li><a href="dex.html">Dex</a></li>
-          <li><a href="#target">Targets</a></li>
-        </ul>
-      </div>
-      <div class="nav-right">
-        <ul class="nav-links">
-          <li><a href="#login">Log In</a></li>
-          <li><a href="#setting">:</a></li>
-        </ul>
-      </div>
-    </nav>
-    <header class="search-section">
-      <div class="search-container">
-        <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search by name or number..."
-            name=""
-            id="pokemon"
-            autocomplete="off"
-          />
-
-          <span class="search-icon" onclick="search()">
-            <img src="assets/icons8-search-24.png" alt="search" />
-          </span>
-
-          <div id="custom-dropdown" class="custom-dropdown-menu hidden"></div>
-        </div>
-      </div>
-    </header>
+@extends('layout.app')
+@section('content')
+<div class = "page-content">
     <div class="title">
       <h1 style="text-align: center;">My Dex</h1>
       <button onclick="startAddMon()" class="add-button">Add new Pokémon</button>
@@ -207,6 +160,6 @@
         </form>
       </div>
     </div>
-    <script src="js/dex.js"></script>
-  </body>
-</html>
+    <script src="{{ asset("js/dex.js") }}"></script>
+</div>
+@endsection

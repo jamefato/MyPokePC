@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Listens for enter pressed (no button needed to search for mons)
 const enterSearch = document.getElementById("pokemon");
+console.log("This runs!");
 
 enterSearch.addEventListener('keydown', function(event) {
     if (event.key == 'Enter') {
@@ -117,18 +118,6 @@ function search() {
         parseInfo(JSON.parse(cached));
         return;
     }
-
-  // AI assisted in ensuring the cache function works properly
-  // We do not want to get in trouble for making too many requests...
-
-  const cachedMons = "pokeCache" + name;
-  const cached = localStorage.getItem(cachedMons);
-
-  if (cached) {
-    console.log("USING CACHE");
-    parseInfo(JSON.parse(cached));
-    return;
-  }
 
   let promise = fetch(endpoint);
 

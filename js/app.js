@@ -7,26 +7,20 @@ const abText = document.getElementById("abilities").innerText
 const cryText = document.getElementById("cries").innerText
 const formText = document.getElementById("forms").innerText
 
-// Listens for enter pressed (no button needed)
+// Listens for enter pressed (no button needed to search for mons)
 const enterSearch = document.getElementById("pokemon");
 
 enterSearch.addEventListener('keydown', function(event) {
     if (event.key == 'Enter') {
-        console.log("enter pressed!")
         search();
     }
 });
 
 // Runs on startup if coming from the dex page
-console.log(localStorage);
 const mon = localStorage.getItem("query");
 const startSearch = localStorage.getItem("search");
 
-console.log(mon);
-console.log(startSearch);
-
 if (startSearch) {
-    console.log("SEARCHING");
     document.getElementById("pokemon").innerText = mon;
     localStorage.removeItem("query");
     localStorage.removeItem("search");
@@ -40,9 +34,6 @@ function search() {
     let name = "/" + newPokemon;
 
     let endpoint = url + query + name;
-
-    console.log(newPokemon);
-    console.log(endpoint);
 
     // AI assisted in ensuring the cache function works properly
     // We do not want to get in trouble for making too many requests...

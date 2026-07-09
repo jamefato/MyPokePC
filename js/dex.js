@@ -78,11 +78,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("click", (e) => {
     if (!inputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.add("hidden");
-      
-      document.getElementById("pokemon").innerText = selectedValue;
-
-      console.log(document.getElementById("pokemon").value);
-      // searchPage();
     }
   });
 });

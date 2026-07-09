@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const dropdownMenu = document.getElementById("custom-dropdown");
   if (!inputField || !dropdownMenu) return;
 
-  // 1. Fetch master database directory once on app initialization
+  // Fetch master database directory once on app initialization
   try {
     const response = await fetch(
       "https://pokeapi.co/api/v2/pokemon?limit=1025",
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to build custom autocomplete index:", e);
   }
 
-  // 2. Handle keystrokes inside the input bar
+  // Handle keystrokes inside the input bar
   inputField.addEventListener("input", () => {
     const query = inputField.value.trim().toLowerCase();
 
@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       dropdownMenu.classList.add("hidden");
       return;
     }
+
     //drop down menu
     dropdownMenu.innerHTML = matches
       .map((pokemon) => {
@@ -65,11 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const searchBtn =
       document.getElementById("search-btn") ||
       document.querySelector('button[type="submit"]');
-    if (searchBtn) {
-      searchBtn.click();
-    } else if (typeof search === "function") {
-      search();
-    }
+    search();
   });
 
   document.addEventListener("click", (e) => {

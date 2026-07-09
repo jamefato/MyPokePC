@@ -1,18 +1,14 @@
-//drop down menu
-let globalPokemonList = []; // Stores master directory in memory
-
-// Handles various events
+// Handles all events (only when the page has loaded)
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const dropdownMenu = document.getElementById("custom-dropdown");
-  const dropdownGend = document.getElementById("gender-results");
-  const dropdownNat = document.getElementById("nature-results");
-  const dropdownGen = document.getElementById("generation-results");
-  const dropdownGam = document.getElementById("game-results");
-  const dropdownLoc = document.getElementById("location-results");
 
+  let globalPokemonList = [];
+
+  const dropdownMenu = document.getElementById("custom-dropdown");
   const monInputField = document.getElementById("pokemon");
   let inputField;
+
+  // Gets pokemon name data
 
   try {
     const response = await fetch(
@@ -78,32 +74,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  dropdownGend.addEventListener("mousedown", (event) => {
-    self.dropdownClicked(inputField, event);
+  document.addEventListener("mousedown", (event) => {
+    if (inputField && inputField != monInputField) {
+      self.dropdownClicked(inputField, event);
+    }
   });
-  dropdownNat.addEventListener("mousedown", (event) => {
-    self.dropdownClicked(inputField, event);
-  });
-  dropdownGen.addEventListener("mousedown", (event) => {
-    self.dropdownClicked(inputField, event);
-  });
-  dropdownGam.addEventListener("mousedown", (event) => {
-    self.dropdownClicked(inputField, event);
-  });
-  dropdownLoc.addEventListener("mousedown", (event) => {
-    self.dropdownClicked(inputField, event);
-  });
+
+  // Global click
 
   document.addEventListener("click", (e) => {
     // Updates the current inputField on any click
     inputField = document.getElementById(document.activeElement.id);
 
-    console.log(inputField);
-
     if (!monInputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.add("hidden");
     }
   });
+
+  // Global screen hotkeys
+
+  document.addEventListener('keydown', (event) => {
+
+    const activeElement = document.activeElement;
+
+    // Opens the add pokemon menu
+
+    if (event.key.toUpperCase() == 'A') {
+      if (!activeElement.id) {
+        self.startAddMon();
+      }
+    }
+
+    // Exits the add pokemon menu when esc pressed
+
+    if (event.key == 'Escape') {
+        self.endAddMon(false);
+    }
+  });
+
+  // Calls displayCard() so pokemon are displayed on opening page
+
+  displayCard();
 });
 
 // Adds dropdown text into input text 
@@ -136,27 +147,6 @@ function startAddMon() {
   const screen = document.getElementById("add-pokemon-modal");
   screen.style.display = 'flex';
 }
-
-// Global screen hotkeys
-
-document.addEventListener('keydown', (event) => {
-
-  const activeElement = document.activeElement;
-
-  // Opens the add pokemon menu
-
-  if (event.key.toUpperCase() == 'A') {
-    if (!activeElement.id) {
-      self.startAddMon();
-    }
-  }
-
-  // Exits the add pokemon menu when esc pressed
-
-  if (event.key == 'Escape') {
-      self.endAddMon(false);
-  }
-});
 
 // Closes the menu to add a pokemon
 // Called on close/add button click or 'esc' pressed
@@ -244,7 +234,3 @@ function displayCard() {
     `
   }
 }
-
-// Calls displayCard() so pokemon are displayed on opening page
-
-displayCard();

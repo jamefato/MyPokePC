@@ -18,14 +18,14 @@ return new class extends Migration
             $table -> string('nickname')->nullable();
             $table -> string('gender');
             $table -> boolean('shiny');
-            $table -> integer('level');
+            $table -> integer('level')->nullable();
             $table -> timestamp('dateCaught');
-            $table -> string('game');
-            $table -> integer('generation');
-            $table -> string('nature');
+            $table -> string('game')->nullable();
+            $table -> integer('generation')->nullable();
+            $table -> string('nature')->nullable();
             $table -> string('location')->nullable();
             $table -> string('method')->nullable();
-            $table -> text('moves')->nullable(); // Comma-separated list?
+            $table -> text('moves')->nullable();
             $table -> json('baseStats')->nullable();
             $table -> integer('trainer_id');
             $table->timestamps();

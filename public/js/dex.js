@@ -1,4 +1,5 @@
 let globalPokemonList = []; // Used in multiple functions
+let showingMore = false;
 
 
 // Handles all events (only when the page has loaded)
@@ -217,15 +218,23 @@ async function endAddMon(adding) {
     }
 
     // Update as more stats are added
+
+    let natSub = null;
+    let locSub = null
+    if (showingMore) {
+      natSub = document.getElementById("input-nature").value;
+      locSub = document.getElementById("input-location").value;
+    }
+
     const newPokemon = {
       species: document.getElementById("input-name").value,
       nickname: document.getElementById("input-nickname").value,
       gender: document.getElementById("input-gender").value,
-      shiny: isShiny,
-      nature: document.getElementById("input-nature").value,
-      generation: 0, // Doesn't matter - changing this anyways so it depends on game
       game: document.getElementById("input-game").value,
-      location: document.getElementById("input-location").value,
+      shiny: isShiny,
+      nature: natSub,
+      generation: 0, // Doesn't matter - changing this anyways so it depends on game
+      location: locSub,
 
       // Currently Unimplemented
 
@@ -299,16 +308,6 @@ function validatePokemon() {
       return false;
   }
 
-  // Nature (optional)
-
-  const natureArr = Array.from(document.querySelectorAll('[id="natureType"]'), input => input.innerText);
-  const natureText = document.getElementById("input-nature").value;
-  if (!natureArr.includes(natureText) && natureText != "") {
-    console.log("not a valid nature");
-    console.log(natureText)
-    console.log(natureArr)
-  }
-
   // Game (optional)
 
   const gameArr = Array.from(document.querySelectorAll('[id="gameType"]'), input => input.innerText);
@@ -319,14 +318,27 @@ function validatePokemon() {
     console.log(gameArr)
   }
 
-  // Location (optional)
+  if (showingMore) {
+      
+    // Nature (optional)
 
-  const locArr = Array.from(document.querySelectorAll('[id="locationType"]'), input => input.innerText);
-  const locText = document.getElementById("input-location").value;
-  if (!locArr.includes(locText) && locText != "") {
-    console.log("not a valid location");
-    console.log(gameText)
-    console.log(gameArr)
+    const natureArr = Array.from(document.querySelectorAll('[id="natureType"]'), input => input.innerText);
+    const natureText = document.getElementById("input-nature").value;
+    if (!natureArr.includes(natureText) && natureText != "") {
+      console.log("not a valid nature");
+      console.log(natureText)
+      console.log(natureArr)
+    }
+
+    // Location (optional)
+
+    const locArr = Array.from(document.querySelectorAll('[id="locationType"]'), input => input.innerText);
+    const locText = document.getElementById("input-location").value;
+    if (!locArr.includes(locText) && locText != "") {
+      console.log("not a valid location");
+      console.log(gameText)
+      console.log(gameArr)
+    }
   }
 
   console.log("validated!");
@@ -434,4 +446,131 @@ async function displayCard() {
     `;
     cardHolder.innerHTML += cardHtml;
   });
+}
+
+// Show More button for extra input features
+
+function showMore() {
+  showingMore = true;
+  const container = document.getElementById("modal-form");
+  container.removeChild(document.getElementById("modal-actions"));
+  container.innerHTML += `
+  <!-- NATURE -->
+
+        <div class="form-group" id="extraOptions">
+          <label for="input-nature">Nature</label>
+
+          <div class="custom-dropdown">
+            <input
+              type="text"
+              id="input-nature"
+              placeholder="Search or select a nature..."
+              autocomplete="off"
+            />
+            <ul class="dropdown-results">
+              <li class="dropdown-item" id="natureType">Adamant</li>
+              <li class="dropdown-item" id="natureType">Bold</li>
+              <li class="dropdown-item" id="natureType">Brave</li>
+              <li class="dropdown-item" id="natureType">Bashful</li>
+              <li class="dropdown-item" id="natureType">Calm</li>
+              <li class="dropdown-item" id="natureType">Careful</li>
+              <li class="dropdown-item" id="natureType">Docile</li>
+              <li class="dropdown-item" id="natureType">Gentle</li>
+              <li class="dropdown-item" id="natureType">Hardy</li>
+              <li class="dropdown-item" id="natureType">Hasty</li>
+              <li class="dropdown-item" id="natureType">Impish</li>
+              <li class="dropdown-item" id="natureType">Jolly</li>
+              <li class="dropdown-item" id="natureType">Lax</li>
+              <li class="dropdown-item" id="natureType">Lonely</li>
+              <li class="dropdown-item" id="natureType">Mild</li>
+              <li class="dropdown-item" id="natureType">Modest</li>
+              <li class="dropdown-item" id="natureType">Naive</li>
+              <li class="dropdown-item" id="natureType">Naughty</li>
+              <li class="dropdown-item" id="natureType">Quiet</li>
+              <li class="dropdown-item" id="natureType">Quirky</li>
+              <li class="dropdown-item" id="natureType">Rash</li>
+              <li class="dropdown-item" id="natureType">Relaxed</li>
+              <li class="dropdown-item" id="natureType">Sassy</li>
+              <li class="dropdown-item" id="natureType">Serious</li>
+              <li class="dropdown-item" id="natureType">Timid</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- GENERATION -->
+
+        <div class="form-group" id="extraOptions">
+          <label for="input-generation">Generation</label>
+          <div class="custom-dropdown">
+            <input
+              type="text"
+              id="input-generation"
+              placeholder="Search or select a generation..."
+              autocomplete="off"
+            />
+
+            <ul class="dropdown-results">
+              <li class="dropdown-item">Generation 1</li>
+              <li class="dropdown-item">Generation 2</li>
+              <li class="dropdown-item">Generation 3</li>
+              <li class="dropdown-item">Generation 4</li>
+              <li class="dropdown-item">Generation 5</li>
+              <li class="dropdown-item">Generation 6</li>
+              <li class="dropdown-item">Generation 7</li>
+              <li class="dropdown-item">Generation 8</li>
+              <li class="dropdown-item">Generation 9</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- LOCATION -->
+
+        <div class="form-group" id="extraOptions">
+          <label for="input-location">Location</label>
+
+          <div class="custom-dropdown">
+            <input
+              type="text"
+              id="input-location"
+              placeholder="Search or select a location..."
+              autocomplete="off"
+            />
+
+            <ul class="dropdown-results">
+              <li class="dropdown-item" id="locationType">Route 205</li>
+              <li class="dropdown-item" id="locationType">Route 206</li>
+              <li class="dropdown-item" id="locationType">Route 207</li>
+              <li class="dropdown-item" id="locationType">Route 208</li>
+              <li class="dropdown-item" id="locationType">Route 209</li>
+              <li class="dropdown-item" id="locationType">Route 210</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-actions" id="modal-actions">
+          <button type="button" onclick="showLess()">Show Less</button>
+          <button type="button" class="btn-cancel" onclick="endAddMon(false)">Cancel</button>
+          <button type="button" class="btn-submit" onclick="endAddMon(true)">Add to PC</button>
+        </div>
+  `
+}
+
+// Show less
+
+function showLess() {
+  showingMore = false;
+  const container = document.getElementById("modal-form");
+  const extraVars = container.querySelectorAll("#extraOptions");
+
+  console.log(container);
+  console.log(extraVars);
+
+  extraVars.forEach(child => child.remove());
+  container.removeChild(document.getElementById("modal-actions"));
+  container.innerHTML += `
+        <div class="modal-actions" id="modal-actions">
+          <button type="button" onclick="showMore()">Show More</button>
+          <button type="button" class="btn-cancel" onclick="endAddMon(false)">Cancel</button>
+          <button type="button" class="btn-submit" onclick="endAddMon(true)">Add to PC</button>
+        </div>
+  `
 }

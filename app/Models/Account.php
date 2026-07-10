@@ -13,6 +13,6 @@ class Account extends Authenticatable
     const UPDATED_AT = null;
 
     protected $table = 'accounts';
-    protected $fillable = ['email', 'password'];
+    protected $fillable = ['email', 'password', 'trainerID'];
     protected $hidden = ['password', 'remember_token'];
 }

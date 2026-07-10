@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("email")->isNotEmpty();
             $table->string("password")->isNotEmpty();
+            $table->unsignedBigInteger("trainerID")->isNotEmpty();
             $table->timestamp("registered");
         });
     }

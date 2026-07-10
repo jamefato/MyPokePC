@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('trainer', function (Blueprint $table) {
             $table->id();
             $table -> string('name');
-            $table -> integer('dexCount');
-            $table -> integer('monCount');
-            $table -> integer('shinyCount');
-            $table -> integer('shinyDex');
+            $table -> integer('dexCount')->default(0);
+            $table -> integer('monCount')->default(0);
+            $table -> integer('shinyCount')->default(0);
+            $table -> integer('shinyDex')->default(0);
             $table->timestamps();
         });
     }

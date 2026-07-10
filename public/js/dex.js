@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let globalPokemonList = [];
 
     const dropdownMenu = document.getElementById("custom-dropdown");
+    const dropdownCaught = document.getElementById("caughtMon");
     const monInputField = document.getElementById("pokemon");
+    const speciesInputField = document.getElementById("input-name");
     let inputField;
 
     // Gets pokemon name data
@@ -51,6 +53,38 @@ document.addEventListener("DOMContentLoaded", async () => {
             .join("");
 
         dropdownMenu.classList.remove("hidden");
+    });
+
+    speciesInputField.addEventListener("keydown", () => {
+      
+      console.log("Are you entering something!")
+        const query = speciesInputField.value.trim().toLowerCase();
+
+        if (!query) {
+            dropdownCaught.classList.add("hidden");
+            return;
+        }
+
+        const matches = globalPokemonList
+            .filter((p) => p.name.includes(query))
+            .slice(0, 8);
+
+        if (matches.length === 0) {
+            dropdownCaught.classList.add("hidden");
+            return;
+        }
+
+        dropdownCaught.innerHTML = matches
+            .map((pokemon) => {
+                const formattedName = pokemon.name
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+                return `<div class="dropdown-item" data-value="${pokemon.name}">${formattedName}</div>`;
+            })
+            .join("");
+
+        dropdownCaught.classList.remove("hidden");
     });
 
     monInputField.addEventListener("keydown", function (event) {
@@ -111,6 +145,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (event.key == "Escape") {
             self.endAddMon(false);
         }
+
+        // Debugging thing - currently runs validatePokemon();
+
+        if (event.key.toUpperCase() == "B") {
+          self.validatePokemon(globalPokemonList);
+        }
     });
 
     // Calls displayCard() so pokemon are displayed on opening page
@@ -158,6 +198,8 @@ function startAddMon() {
 async function endAddMon(adding) {
   if (adding) {
 
+    if (!self.validatePokemon(globalPokemonList)) return;
+
     let isShiny = false;
     if (document.querySelector('input[name="shiny"]:checked')?.value == "Yes") {
       isShiny = true;
@@ -172,8 +214,6 @@ async function endAddMon(adding) {
       generation: 0, // Doesn't matter - changing this anyways so it depends on game
       game: document.getElementById("input-game").value,
       location: document.getElementById("input-location").value,
-
-
 
       // Currently Unimplemented
 
@@ -197,6 +237,90 @@ async function endAddMon(adding) {
   displayCard();
   const screen = document.getElementById("add-pokemon-modal");
   screen.style.display = 'none';
+}
+
+// Error handling - Validates user inputs
+
+function validatePokemon(globalPokemonList) {
+
+  console.log("Validating...");
+
+  console.log(globalPokemonList);
+
+  // Species
+  let pokemonArr = [];
+  globalPokemonList.forEach(element => {
+    pokemonArr.push(element.name.toLowerCase());
+  });
+  const nameText = document.getElementById("input-name").value;
+  if (!nameText) {
+    console.log("Please enter the type of mon you caught");
+    return false;
+  } else if (!pokemonArr.includes(nameText)) {
+    console.log("Please enter a valid pokemon");
+    return false;
+  }
+  
+
+  // Nickname
+  const nicknameText = document.getElementById("input-nickname").value;
+  if (!nicknameText.match(/^[a-zA-Z 0-9\.\,\+\-\;\:\!\?\♀️\♂️]*$/)) {
+    console.log("Special character found! NO SUBMITTING")
+    // Display error message/box
+    return false;
+  } else if (nicknameText.length > 11) {
+    console.log("TOo long name");
+    // Display on error message
+    return false;
+  }
+
+  // Gender
+  let genderText = document.getElementById("input-gender").value;
+  if (!genderText) {
+    genderText = "Genderless";
+  } else if (genderText.toUpperCase() != "MALE" && genderText.toUpperCase() != "FEMALE" && genderText.toUpperCase() != "GENDERLESS") {
+    console.log("INVALID GENDER. THERE CAN ONLY BE (3 HERE I AM SORRY)");
+    // Display error message/box
+    return false;
+  }
+
+  // Shiny
+
+  if (!document.querySelector('input[name="shiny"]:checked')) {
+      console.log("Please select if it is shiny or not");
+      return false;
+  }
+
+  // Nature (optional)
+
+  const natureArr = Array.from(document.querySelectorAll('[id="natureType"]'), input => input.innerText);
+  const natureText = document.getElementById("input-nature").value;
+  if (!natureArr.includes(natureText) && natureText != "") {
+    console.log("not a valid nature");
+    console.log(natureText)
+    console.log(natureArr)
+  }
+
+  // Game (optional)
+
+  const gameArr = Array.from(document.querySelectorAll('[id="gameType"]'), input => input.innerText);
+  const gameText = document.getElementById("input-game").value;
+  if (!gameArr.includes(gameText) && gameText != "") {
+    console.log("not a valid game");
+    console.log(gameText)
+    console.log(gameArr)
+  }
+
+  // Location (optional)
+
+  const locArr = Array.from(document.querySelectorAll('[id="locationType"]'), input => input.innerText);
+  const locText = document.getElementById("input-location").value;
+  if (!locArr.includes(locText) && locText != "") {
+    console.log("not a valid location");
+    console.log(gameText)
+    console.log(gameArr)
+  }
+
 }
 
 // Displays all caught pokemon

@@ -951,3 +951,21 @@ body {
 }
 
 /*font-family: "Pixelify Sans", sans-serif;*/
+
+.about-section
+{
+  text-align:center;
+}
+
+/* Login Page */
+
+.login-form
+{
+  margin: 10px 10px;
+  text-align: center;
+}
+.login-box
+{
+  padding: 10px 10px;
+  margin: 10px 0px;
+}

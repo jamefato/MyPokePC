@@ -13,7 +13,7 @@
         <div class="nav-logo"><a href="{{ route("home") }}">MyPokéPC</a></div>
         <ul class="nav-links">
           <li><a href="{{ route("dex") }}">Dex</a></li>
-          <li><a href="#target">Targets</a></li>
+          <li><a href="{{ route("home") }}">Search</a></li>
         </ul>
       </div>
       <div class="nav-right">

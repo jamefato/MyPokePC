@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class PokemonController extends Controller
 {
 
-    // GET Function
+    // GET Function, only returns your trainer's pokemon
     public function index() {
-        return Pokemon::all();
+        return Pokemon::where('trainer_id', Auth::user()->trainerID)->get();
     }
 
     // POST Function

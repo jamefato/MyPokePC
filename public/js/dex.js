@@ -1,8 +1,9 @@
+let globalPokemonList = []; // Used in multiple functions
+
+
 // Handles all events (only when the page has loaded)
 
 document.addEventListener("DOMContentLoaded", async () => {
-    let globalPokemonList = [];
-
     const dropdownMenu = document.getElementById("custom-dropdown");
     const dropdownCaught = document.getElementById("caughtMon");
     const monInputField = document.getElementById("pokemon");
@@ -55,7 +56,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         dropdownMenu.classList.remove("hidden");
     });
 
-    speciesInputField.addEventListener("keydown", () => {
+    // Same as above but on add screen
+
+    speciesInputField.addEventListener("input", () => {
       
       console.log("Are you entering something!")
         const query = speciesInputField.value.trim().toLowerCase();
@@ -80,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     .split("-")
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(" ");
-                return `<div class="dropdown-item" data-value="${pokemon.name}">${formattedName}</div>`;
+                return `<div class="dropdown-item" data-value="${pokemon.name}" style="width: 69%;">${formattedName}</div>`;
             })
             .join("");
 
@@ -105,6 +108,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (searchBtn) {
             self.searchPage();
         }
+    });
+
+    // Hides the dropdown menu when adding pokemon
+
+    dropdownCaught.addEventListener("click", (event) => {
+      self.dropdownClicked(speciesInputField, event);
+      dropdownCaught.classList.add("hidden");
     });
 
     document.addEventListener("mousedown", (event) => {
@@ -149,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Debugging thing - currently runs validatePokemon();
 
         if (event.key.toUpperCase() == "B") {
-          self.validatePokemon(globalPokemonList);
+          self.validatePokemon();
         }
     });
 
@@ -196,9 +206,10 @@ function startAddMon() {
 // Called on close/add button click or 'esc' pressed
 
 async function endAddMon(adding) {
+
   if (adding) {
 
-    if (!self.validatePokemon(globalPokemonList)) return;
+    if (!self.validatePokemon()) return;
 
     let isShiny = false;
     if (document.querySelector('input[name="shiny"]:checked')?.value == "Yes") {
@@ -207,6 +218,7 @@ async function endAddMon(adding) {
 
     // Update as more stats are added
     const newPokemon = {
+      species: document.getElementById("input-name").value,
       nickname: document.getElementById("input-nickname").value,
       gender: document.getElementById("input-gender").value,
       shiny: isShiny,
@@ -217,7 +229,6 @@ async function endAddMon(adding) {
 
       // Currently Unimplemented
 
-      species: "Leafeon",
       level: 1,
       method: null,
       moves: null,
@@ -241,18 +252,16 @@ async function endAddMon(adding) {
 
 // Error handling - Validates user inputs
 
-function validatePokemon(globalPokemonList) {
+function validatePokemon() {
 
   console.log("Validating...");
-
-  console.log(globalPokemonList);
 
   // Species
   let pokemonArr = [];
   globalPokemonList.forEach(element => {
     pokemonArr.push(element.name.toLowerCase());
   });
-  const nameText = document.getElementById("input-name").value;
+  const nameText = document.getElementById("input-name").value.toLowerCase();
   if (!nameText) {
     console.log("Please enter the type of mon you caught");
     return false;
@@ -261,7 +270,6 @@ function validatePokemon(globalPokemonList) {
     return false;
   }
   
-
   // Nickname
   const nicknameText = document.getElementById("input-nickname").value;
   if (!nicknameText.match(/^[a-zA-Z 0-9\.\,\+\-\;\:\!\?\♀️\♂️]*$/)) {
@@ -321,6 +329,8 @@ function validatePokemon(globalPokemonList) {
     console.log(gameArr)
   }
 
+  console.log("validated!");
+  return true;
 }
 
 // Displays all caught pokemon
@@ -338,7 +348,7 @@ async function displayCard() {
     pokemonData.forEach((mon) => {
         let cardHtml = `
     <div class="card">
-          <span class="pokedex-number">DEX NUM</span>
+          <span class="pokedex-number">#${parseInt(Object.keys(globalPokemonList).find(key => globalPokemonList[key].name === mon.species.toLowerCase())) + 1}</span>
           <img
             class="sprite"
             src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/412.png"

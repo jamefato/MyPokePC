@@ -21,8 +21,14 @@
         </div>
         <div class="modal-title-wrapper">
           <span class="modal-subtitle">YOU CAUGHT:</span>
-          <input type="text" class="modal-title" id="input-name" placeholder="e.g. Pikachu" autocomplete="off" style="max-width: 75%"/>
-          <div id="caughtMon"></div>
+          <div class="search-box">
+            <input type="text" class="modal-title" id="input-name" placeholder="e.g. Pikachu" autocomplete="off"/>
+            <div id="caughtMon" class="custom-dropdown-menu hidden"></div>
+          </div>
+
+
+          <!-- FIX LATER, USE THE SAME FORMATTING FOR A DROPDOWN AS THE OTHER THING -->
+
         </div>
       </div>
 

@@ -137,7 +137,7 @@ function dropdownClicked(inputV, event) {
 function searchPage() {
     localStorage.setItem("query", String(document.getElementById("pokemon").value));
     localStorage.setItem("search", true);
-    window.location.href = "index.html";
+    // window.location.href = "index.html"; Change to fit Blade stuff
 }
 
 // Opens the menu to add a pokemon
@@ -153,24 +153,32 @@ function startAddMon() {
 
 async function endAddMon(adding) {
   if (adding) {
+
+    let isShiny = false;
+    if (document.querySelector('input[name="shiny"]:checked')?.value == "Yes") {
+      isShiny = true;
+    }
+
     // Update as more stats are added
     const newPokemon = {
       nickname: document.getElementById("input-nickname").value,
       gender: document.getElementById("input-gender").value,
+      shiny: isShiny,
       nature: document.getElementById("input-nature").value,
       generation: 0, // Doesn't matter - changing this anyways so it depends on game
       game: document.getElementById("input-game").value,
+      location: document.getElementById("input-location").value,
+
+
 
       // Currently Unimplemented
 
       species: "Leafeon",
-      shiny: false,
       level: 1,
-      location: null,
       method: null,
       moves: null,
       baseStats: null,
-      trainer_id: 2
+      trainer_id: 0
     };
 
     console.log(newPokemon);
@@ -209,11 +217,14 @@ async function displayCard() {
             alt="${mon.species}"
           />
           <div class="content">`;
+    
     if (mon.nickname) {
-      cardHtml += `<h3 class="pokemon_name">${mon.nickname} (${mon.species})</h3>`
+      cardHtml += `<h3 class="pokemon_name" style="margin: 0px;">${mon.nickname}</h3>
+      <h4 style="margin-top: 0px; margin-bottom: 10px">(${mon.species})</h4>`
     } else {
       cardHtml += `<h3 class="pokemon_name">${mon.species}</h3>`;
       }
+
       cardHtml += `
             <div class="pokemon-info-grid">
               <div class="info-group">
@@ -262,14 +273,27 @@ async function displayCard() {
             </div>
             <div class="card-footer">
               <button class="fav-button">❤️</button>
-              <div class="status-icons">
-                <span class="icon gender-icon">♂️</span>
-                <span class="icon shiny-icon">✨</span>
+              <div class="status-icons">`
+      
+      let genderIcon = "";
+      if (mon.gender.toLowerCase() == "male") {
+        genderIcon = "♂️";
+      } else if (mon.gender.toLowerCase() == "female") {
+        genderIcon = "♀️";
+      }
+
+      let shinyIcon = "";
+      if (mon.shiny) {
+        shinyIcon = "✨";
+      }
+
+      cardHtml +=`<span class="icon gender-icon">${genderIcon}</span>
+                <span class="icon shiny-icon">${shinyIcon}</span>
               </div>
             </div>
           </div>
         </div>
     `;
-    cardHolder.innerHTML = cardHtml;
+    cardHolder.innerHTML += cardHtml;
   });
 }

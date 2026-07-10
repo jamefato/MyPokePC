@@ -4,11 +4,11 @@
     <form class="login-form" id="form register-form" action="{{ route('register') }}" method="post">
 
         @csrf
-        <input name="name" class="form login-box" type="text" placeholder="trainer name" required/>
+        <input name="name" class="form login-box" type="text" placeholder="Trainer Name" required/>
         <br/>
-        <input name="email" class="form login-box" type="email" placeholder="email" required/>
+        <input name="email" class="form login-box" type="email" placeholder="Email" required/>
         <br/>
-        <input name="password" class="form login-box" type="password" placeholder="password" required/>
+        <input name="password" class="form login-box" type="password" placeholder="Password" required/>
         <br/>
 
         @if ($errors->any())

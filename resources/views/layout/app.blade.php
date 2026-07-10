@@ -19,7 +19,7 @@
     
     <ul class="nav-links">
       <li><a href="{{ route('dex') }}" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">Dex</a></li>
-      <li><a href="#target" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">Targets</a></li>
+      <li><a href=" {{ route('home') }}" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">Search</a></li>
     </ul>
 
   </div>

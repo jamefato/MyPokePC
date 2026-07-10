@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     speciesInputField.addEventListener("input", () => {
       
-      console.log("Are you entering something!")
         const query = speciesInputField.value.trim().toLowerCase();
 
         if (!query) {
@@ -172,9 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Adds dropdown text into input text
 
 function dropdownClicked(inputV, event) {
-    console.log("Clicked a dropdown item!");
     const clickedItem = event.target.closest(".dropdown-item");
-    console.log(clickedItem);
     if (!clickedItem) return;
 
     let selectedValue = clickedItem.innerText;
@@ -244,7 +241,6 @@ async function endAddMon(adding) {
       baseStats: null,
     };
 
-    console.log(newPokemon);
 
     await fetch("/api/pokemon", {
       method: "POST",
@@ -264,8 +260,6 @@ async function endAddMon(adding) {
 
 function validatePokemon() {
 
-  console.log("Validating...");
-
   // Species
   let pokemonArr = [];
   globalPokemonList.forEach(element => {
@@ -273,21 +267,17 @@ function validatePokemon() {
   });
   const nameText = document.getElementById("input-name").value.toLowerCase();
   if (!nameText) {
-    console.log("Please enter the type of mon you caught");
     return false;
   } else if (!pokemonArr.includes(nameText)) {
-    console.log("Please enter a valid pokemon");
     return false;
   }
   
   // Nickname
   const nicknameText = document.getElementById("input-nickname").value;
   if (!nicknameText.match(/^[a-zA-Z 0-9\.\,\+\-\;\:\!\?\♀️\♂️]*$/)) {
-    console.log("Special character found! NO SUBMITTING")
     // Display error message/box
     return false;
   } else if (nicknameText.length > 11) {
-    console.log("TOo long name");
     // Display on error message
     return false;
   }
@@ -297,7 +287,6 @@ function validatePokemon() {
   if (!genderText) {
     genderText = "Genderless";
   } else if (genderText.toUpperCase() != "MALE" && genderText.toUpperCase() != "FEMALE" && genderText.toUpperCase() != "GENDERLESS") {
-    console.log("INVALID GENDER. THERE CAN ONLY BE (3 HERE I AM SORRY)");
     // Display error message/box
     return false;
   }
@@ -305,7 +294,6 @@ function validatePokemon() {
   // Shiny
 
   if (!document.querySelector('input[name="shiny"]:checked')) {
-      console.log("Please select if it is shiny or not");
       return false;
   }
 
@@ -314,9 +302,6 @@ function validatePokemon() {
   const gameArr = Array.from(document.querySelectorAll('[id="gameType"]'), input => input.innerText);
   const gameText = document.getElementById("input-game").value;
   if (!gameArr.includes(gameText) && gameText != "") {
-    console.log("not a valid game");
-    console.log(gameText)
-    console.log(gameArr)
   }
 
   if (showingMore) {
@@ -326,9 +311,6 @@ function validatePokemon() {
     const natureArr = Array.from(document.querySelectorAll('[id="natureType"]'), input => input.innerText);
     const natureText = document.getElementById("input-nature").value;
     if (!natureArr.includes(natureText) && natureText != "") {
-      console.log("not a valid nature");
-      console.log(natureText)
-      console.log(natureArr)
     }
 
     // Location (optional)
@@ -336,13 +318,9 @@ function validatePokemon() {
     const locArr = Array.from(document.querySelectorAll('[id="locationType"]'), input => input.innerText);
     const locText = document.getElementById("input-location").value;
     if (!locArr.includes(locText) && locText != "") {
-      console.log("not a valid location");
-      console.log(gameText)
-      console.log(gameArr)
     }
   }
 
-  console.log("validated!");
   return true;
 }
 
@@ -399,9 +377,7 @@ async function displayCard() {
               </div>
 
               <div class="info-group">
-                <span class="info-label" id="location-label"
-                  >caught location</span
-                >
+                <span class="info-label" id="location-label">caught location</span>
                 <span class="info-value" id="location-value">${mon.location}</span>
               </div>
 
@@ -410,22 +386,10 @@ async function displayCard() {
                 <span class="info-value" id="date-value">${String(mon.dateCaught).slice(0, 10)}</span>
               </div>
               <div class="info-group">
-                <span class="info-label" id="method-label">Method</span>
+                <span class="info-label" id="met  d-label">Method</span>
                 <span class="info-value" id="method-value"
                   >${mon.method}</span
                 >
-              </div>
-              <div class="info-group">
-                <span class="info-label" id="hour-label">Hour</span>
-                <span class="info-value" id="hour-value">20</span>
-              </div>
-              <div class="info-group">
-                <span class="info-label" id="phase-label">Phases</span>
-                <span class="info-value" id="phase-value">1</span>
-              </div>
-              <div class="info-group">
-                <span class="info-label" id="console-label">Console</span>
-                <span class="info-value" id="console-value">1</span>
               </div>
             </div>
             <div class="card-footer">
@@ -567,9 +531,6 @@ function showLess() {
   showingMore = false;
   const container = document.getElementById("modal-form");
   const extraVars = container.querySelectorAll("#extraOptions");
-
-  console.log(container);
-  console.log(extraVars);
 
   extraVars.forEach(child => child.remove());
   container.removeChild(document.getElementById("modal-actions"));

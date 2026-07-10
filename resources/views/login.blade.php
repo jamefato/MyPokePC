@@ -5,9 +5,9 @@
 
         @csrf
         
-        <input name="email" class="login-box" type="email" placeholder="enter email..." required/>
+        <input name="email" class="login-box" type="email" placeholder="Enter email..." required/>
         <br/>
-        <input name="password" class="login-box" type="password" placeholder="enter password..." required/>
+        <input name="password" class="login-box" type="password" placeholder="Enter password..." required/>
         <br/>
 
         @if ($errors->any())
@@ -20,7 +20,7 @@
 
         <button type="submit">Login</button>
         <br/><br/>
-        <p>don't have an account? <a href = {{ route('register') }}>Create one</a></p>
+        <p>Don't have an account? <a href = {{ route('register') }}>Create one</a></p>
     </form>
 </div>
 @endsection

@@ -155,9 +155,35 @@ function startAddMon() {
 // Closes the menu to add a pokemon
 // Called on close/add button click or 'esc' pressed
 
-function endAddMon(adding) {
+async function endAddMon(adding) {
     if (adding) {
-        console.log("Add cdoe to keep mon here");
+        // Update as more stats are added
+        const newPokemon = {
+            nickname: document.getElementById("input-nickname").value,
+            gender: document.getElementById("input-gender").value,
+            nature: document.getElementById("input-nature").value,
+            generation: 0, // Doesn't matter - changing this anyways so it depends on game
+            game: document.getElementById("input-game").value,
+
+            // Currently Unimplemented
+
+            species: "Leafeon",
+            shiny: false,
+            level: 1,
+            location: null,
+            method: null,
+            moves: null,
+            baseStats: null,
+            trainer_id: 2,
+        };
+
+        console.log(newPokemon);
+
+        await fetch("/api/pokemon", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newPokemon),
+        });
     }
     displayCard();
     const screen = document.getElementById("add-pokemon-modal");
@@ -166,51 +192,62 @@ function endAddMon(adding) {
 
 // Displays all caught pokemon
 
-function displayCard() {
+async function displayCard() {
     const cardHolder = document.getElementById("grid");
     cardHolder.replaceChildren();
-    const numPokemon = 5; // Change later when DB is added
-    for (let i = 0; i < numPokemon; i++) {
-        cardHolder.innerHTML += `
+
+    // Gets currently stored pokemon data
+
+    const response = await fetch("/api/pokemon");
+    const pokemonData = await response.json();
+
+    // Iteratively displays all pokemon
+    pokemonData.forEach((mon) => {
+        let cardHtml = `
     <div class="card">
-          <span class="pokedex-number">#412</span>
+          <span class="pokedex-number">DEX NUM</span>
           <img
             class="sprite"
             src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/412.png"
-            alt="burmy"
+            alt="${mon.species}"
           />
-          <div class="content">
-            <h3 class="pokemon_name">Burmy</h3>
+          <div class="content">`;
+        if (mon.nickname) {
+            cardHtml += `<h3 class="pokemon_name">${mon.nickname} (${mon.species})</h3>`;
+        } else {
+            cardHtml += `<h3 class="pokemon_name">${mon.species}</h3>`;
+        }
+        cardHtml += `
             <div class="pokemon-info-grid">
               <div class="info-group">
                 <span class="info-label" id="nickname-label">nickname</span>
-                <span class="info-value" id="nickname-value">Borm</span>
+                <span class="info-value" id="nickname-value">${mon.nickname}</span>
               </div>
               <div class="info-group">
                 <span class="info-label" id="nature-label">nature</span>
-                <span class="info-value" id="nature-value">Adamant</span>
+                <span class="info-value" id="nature-value">${mon.nature}</span>
               </div>
 
               <div class="info-group">
                 <span class="info-label" id="game-label">game</span>
-                <span class="info-value" id="game-value">Omega Ruby</span>
+                <span class="info-value" id="game-value">${mon.game}</span>
               </div>
 
               <div class="info-group">
                 <span class="info-label" id="location-label"
                   >caught location</span
                 >
-                <span class="info-value" id="location-value">Route 104</span>
+                <span class="info-value" id="location-value">${mon.location}</span>
               </div>
 
               <div class="info-group">
                 <span class="info-label" id="date-label">Date found</span>
-                <span class="info-value" id="date-value">2026/06/29</span>
+                <span class="info-value" id="date-value">${String(mon.dateCaught).slice(0, 10)}</span>
               </div>
               <div class="info-group">
                 <span class="info-label" id="method-label">Method</span>
                 <span class="info-value" id="method-value"
-                  >random encouter</span
+                  >${mon.method}</span
                 >
               </div>
               <div class="info-group">
@@ -236,5 +273,6 @@ function displayCard() {
           </div>
         </div>
     `;
-    }
+        cardHolder.innerHTML = cardHtml;
+    });
 }

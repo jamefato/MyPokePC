@@ -1,151 +1,155 @@
 // Handles all events (only when the page has loaded)
 
 document.addEventListener("DOMContentLoaded", async () => {
+    let globalPokemonList = [];
 
-  let globalPokemonList = [];
+    const dropdownMenu = document.getElementById("custom-dropdown");
+    const monInputField = document.getElementById("pokemon");
+    let inputField;
 
-  const dropdownMenu = document.getElementById("custom-dropdown");
-  const monInputField = document.getElementById("pokemon");
-  let inputField;
+    // Gets pokemon name data
 
-  // Gets pokemon name data
-
-  try {
-    const response = await fetch(
-      "https://pokeapi.co/api/v2/pokemon?limit=1025",
-    );
-    if (response.ok) {
-      const data = await response.json();
-      globalPokemonList = data.results;
-    }
-  } catch (e) {
-    console.error("Failed to build custom autocomplete index:", e);
-  }
-
-  // Creates the dropdown menu when searching for pokemon
-
-  monInputField.addEventListener("input", () => {
-    const query = monInputField.value.trim().toLowerCase();
-
-    if (!query) {
-      dropdownMenu.classList.add("hidden");
-      return;
+    try {
+        const response = await fetch(
+            "https://pokeapi.co/api/v2/pokemon?limit=1025",
+        );
+        if (response.ok) {
+            const data = await response.json();
+            globalPokemonList = data.results;
+        }
+    } catch (e) {
+        console.error("Failed to build custom autocomplete index:", e);
     }
 
-    const matches = globalPokemonList
-      .filter((p) => p.name.includes(query))
-      .slice(0, 8);
+    // Creates the dropdown menu when searching for pokemon
 
-    if (matches.length === 0) {
-      dropdownMenu.classList.add("hidden");
-      return;
-    }
+    monInputField.addEventListener("input", () => {
+        const query = monInputField.value.trim().toLowerCase();
 
-    dropdownMenu.innerHTML = matches
-      .map((pokemon) => {
-        const formattedName = pokemon.name
-          .split("-")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
-        return `<div class="dropdown-item" data-value="${pokemon.name}">${formattedName}</div>`;
-      })
-      .join("");
+        if (!query) {
+            dropdownMenu.classList.add("hidden");
+            return;
+        }
 
-    dropdownMenu.classList.remove("hidden");
-  });
+        const matches = globalPokemonList
+            .filter((p) => p.name.includes(query))
+            .slice(0, 8);
 
-  monInputField.addEventListener('keydown', function(event) {
-    if (event.key == 'Enter') {
-        self.searchPage();
-    }
-  });
+        if (matches.length === 0) {
+            dropdownMenu.classList.add("hidden");
+            return;
+        }
 
-  // Handles all types of dropdown menus on the page
+        dropdownMenu.innerHTML = matches
+            .map((pokemon) => {
+                const formattedName = pokemon.name
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+                return `<div class="dropdown-item" data-value="${pokemon.name}">${formattedName}</div>`;
+            })
+            .join("");
 
-  dropdownMenu.addEventListener("click", (event) => {
-    self.dropdownClicked(monInputField, event);
-    dropdownMenu.classList.add("hidden");
+        dropdownMenu.classList.remove("hidden");
+    });
 
-    const searchBtn =
-      document.getElementById("search-btn") ||
-      document.querySelector('button[type="submit"]');
-    if (searchBtn) {
-      self.searchPage();
-    }
-  });
+    monInputField.addEventListener("keydown", function (event) {
+        if (event.key == "Enter") {
+            self.searchPage();
+        }
+    });
 
-  document.addEventListener("mousedown", (event) => {
-    if (inputField && inputField != monInputField) {
-      self.dropdownClicked(inputField, event);
-    }
-  });
+    // Handles all types of dropdown menus on the page
 
-  // Global click
+    dropdownMenu.addEventListener("click", (event) => {
+        self.dropdownClicked(monInputField, event);
+        dropdownMenu.classList.add("hidden");
 
-  document.addEventListener("click", (e) => {
-    // Updates the current inputField on any click
-    inputField = document.getElementById(document.activeElement.id);
+        const searchBtn =
+            document.getElementById("search-btn") ||
+            document.querySelector('button[type="submit"]');
+        if (searchBtn) {
+            self.searchPage();
+        }
+    });
 
-    if (!monInputField.contains(e.target) && !dropdownMenu.contains(e.target)) {
-      dropdownMenu.classList.add("hidden");
-    }
-  });
+    document.addEventListener("mousedown", (event) => {
+        if (inputField && inputField != monInputField) {
+            self.dropdownClicked(inputField, event);
+        }
+    });
 
-  // Global screen hotkeys
+    // Global click
 
-  document.addEventListener('keydown', (event) => {
+    document.addEventListener("click", (e) => {
+        // Updates the current inputField on any click
+        inputField = document.getElementById(document.activeElement.id);
 
-    const activeElement = document.activeElement;
+        if (
+            !monInputField.contains(e.target) &&
+            !dropdownMenu.contains(e.target)
+        ) {
+            dropdownMenu.classList.add("hidden");
+        }
+    });
 
-    // Opens the add pokemon menu
+    // Global screen hotkeys
 
-    if (event.key.toUpperCase() == 'A') {
-      if (!activeElement.id) {
-        self.startAddMon();
-      }
-    }
+    document.addEventListener("keydown", (event) => {
+        const activeElement = document.activeElement;
 
-    // Exits the add pokemon menu when esc pressed
+        // Opens the add pokemon menu
 
-    if (event.key == 'Escape') {
-        self.endAddMon(false);
-    }
-  });
+        if (event.key.toUpperCase() == "A") {
+            if (!activeElement.id) {
+                self.startAddMon();
+            }
+        }
 
-  // Calls displayCard() so pokemon are displayed on opening page
+        // Exits the add pokemon menu when esc pressed
 
-  displayCard();
+        if (event.key == "Escape") {
+            self.endAddMon(false);
+        }
+    });
+
+    // Calls displayCard() so pokemon are displayed on opening page
+
+    displayCard();
 });
 
-// Adds dropdown text into input text 
+// Adds dropdown text into input text
 
 function dropdownClicked(inputV, event) {
-  console.log("Clicked a dropdown item!");
-  const clickedItem = event.target.closest(".dropdown-item");
-  console.log(clickedItem);
-  if (!clickedItem) return;
+    console.log("Clicked a dropdown item!");
+    const clickedItem = event.target.closest(".dropdown-item");
+    console.log(clickedItem);
+    if (!clickedItem) return;
 
-  let selectedValue = clickedItem.innerText;
-  if (clickedItem.getAttribute("data-value")) {
-    selectedValue = clickedItem.getAttribute("data-value");
-  }
-  inputV.value = selectedValue;
+    let selectedValue = clickedItem.innerText;
+    if (clickedItem.getAttribute("data-value")) {
+        selectedValue = clickedItem.getAttribute("data-value");
+    }
+    inputV.value = selectedValue;
 }
 
 // Switches files and searches for specified pokemon
 
 function searchPage() {
-    localStorage.setItem("query", String(document.getElementById("pokemon").value));
+    localStorage.setItem(
+        "query",
+        String(document.getElementById("pokemon").value),
+    );
     localStorage.setItem("search", true);
-    // window.location.href = "index.html"; Change to fit Blade stuff
+    window.location.href = "/";
 }
 
 // Opens the menu to add a pokemon
 // Called on button click or 'a' pressed
 
 function startAddMon() {
-  const screen = document.getElementById("add-pokemon-modal");
-  screen.style.display = 'flex';
+    const screen = document.getElementById("add-pokemon-modal");
+    screen.style.display = "flex";
 }
 
 // Closes the menu to add a pokemon
@@ -198,17 +202,17 @@ async function endAddMon(adding) {
 // Displays all caught pokemon
 
 async function displayCard() {
-  const cardHolder = document.getElementById("grid");
-  cardHolder.replaceChildren();
+    const cardHolder = document.getElementById("grid");
+    cardHolder.replaceChildren();
 
-  // Gets currently stored pokemon data
-  
-  const response = await fetch("/api/pokemon");
-  const pokemonData = await response.json();
+    // Gets currently stored pokemon data
 
-  // Iteratively displays all pokemon
-  pokemonData.forEach(mon => {
-    let cardHtml = `
+    const response = await fetch("/api/pokemon");
+    const pokemonData = await response.json();
+
+    // Iteratively displays all pokemon
+    pokemonData.forEach((mon) => {
+        let cardHtml = `
     <div class="card">
           <span class="pokedex-number">DEX NUM</span>
           <img

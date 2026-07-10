@@ -32,6 +32,25 @@
 
   </div>
 </nav>
+<header class="search-section">
+      <div class="search-container">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search by name or number..."
+            name=""
+            id="pokemon"
+            autocomplete="off"
+          />
+
+          <span class="search-icon" onclick="search()">
+            <img src="assets/icons8-search-24.png" alt="search" />
+          </span>
+
+          <div id="custom-dropdown" class="custom-dropdown-menu hidden"></div>
+        </div>
+      </div>
+</header>
     <!-- Page Content -->
     @yield('content')
 </body>

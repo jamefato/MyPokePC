@@ -1,24 +1,5 @@
 @extends('layout.app')
 @section('content')
-<header class="search-section">
-      <div class="search-container">
-        <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search by name or number..."
-            name=""
-            id="pokemon"
-            autocomplete="off"
-          />
-
-          <span class="search-icon" onclick="search()">
-            <img src="assets/icons8-search-24.png" alt="search" />
-          </span>
-
-          <div id="custom-dropdown" class="custom-dropdown-menu hidden"></div>
-        </div>
-      </div>
-</header>
 <div class = "page-content">
     <div class="info-page-layout">
       <div class="side-column left-side"></div>

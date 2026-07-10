@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DexController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\InfoController;
 
 Route::get('/', [AboutController::class, 'about'])->name('about');
 
@@ -21,5 +22,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/home', [HomeController::class, 'home'])->name('home')->middleware('auth');
 
 Route::get('/dex', [DexController::class, 'dex'])->name('dex')->middleware('auth');
+
+Route::get('/info', [InfoController::class, 'info'])->name('info')->middleware('auth');
 
 Route::view('/register', 'register') -> name('register');

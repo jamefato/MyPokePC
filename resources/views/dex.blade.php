@@ -155,7 +155,7 @@
 
         <div class="modal-actions">
           <button type="button" class="btn-cancel" onclick="endAddMon(false)">Cancel</button>
-          <button type="submit" class="btn-submit" onclick="endAddMon(true)">Add to PC</button>
+          <button type="button" class="btn-submit" onclick="endAddMon(true)">Add to PC</button>
         </div>
       </form>
     </div>

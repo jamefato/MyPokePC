@@ -15,19 +15,19 @@ return new class extends Migration
         Schema::create('pokemon', function (Blueprint $table) {
             $table->id();
             $table -> string('species');
-            $table -> string('nickname');
-            $table -> boolean('gender');
+            $table -> string('nickname')->nullable();
+            $table -> string('gender');
             $table -> boolean('shiny');
             $table -> integer('level');
             $table -> timestamp('dateCaught');
             $table -> string('game');
             $table -> integer('generation');
             $table -> string('nature');
-            $table -> string('location');
-            $table -> string('method');
-            $table -> text('moves'); // Comma-separated list?
-            $table -> json('baseStats');
-            $table -> integer('trainerID');
+            $table -> string('location')->nullable();
+            $table -> string('method')->nullable();
+            $table -> text('moves')->nullable(); // Comma-separated list?
+            $table -> json('baseStats')->nullable();
+            $table -> integer('trainer_id');
             $table->timestamps();
         });
     }

@@ -31,6 +31,8 @@
           <input type="text" id="input-nickname" placeholder="e.g. Borm" autocomplete="off"/>
         </div>
 
+        <!-- GENDER -->
+
         <div class="form-group">
           <label for="input-gender">Gender</label>
           <div class="custom-dropdown">
@@ -48,6 +50,23 @@
             </ul>
           </div>
         </div>
+
+        <!-- SHINY -->
+
+        <div class="form-group">
+          <label for="input-shiny">Shiny?</label>
+
+          <div id="input-shiny">
+            <label for="yesShiny">Yes</label>
+            <input type="radio" id="yesShiny" name="shiny" value="Yes">
+
+            <label for="noShiny">No</label>
+            <input type="radio" id="noShiny" name="shiny" value="No">
+          </div>
+        </div>
+
+        <!-- NATURE -->
+
         <div class="form-group">
           <label for="input-nature">Nature</label>
 
@@ -87,6 +106,9 @@
             </ul>
           </div>
         </div>
+
+        <!-- GENERATION -->
+
         <div class="form-group">
           <label for="input-generation">Generation</label>
           <div class="custom-dropdown">
@@ -110,6 +132,9 @@
             </ul>
           </div>
         </div>
+
+        <!-- GAME -->
+
         <div class="form-group">
           <label for="input-game">Game</label>
 
@@ -131,6 +156,9 @@
             </ul>
           </div>
         </div>
+
+        <!-- LOCATION -->
+
         <div class="form-group">
           <label for="input-location">Location</label>
 

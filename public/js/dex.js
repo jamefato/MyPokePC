@@ -156,38 +156,47 @@ function startAddMon() {
 // Called on close/add button click or 'esc' pressed
 
 async function endAddMon(adding) {
-    if (adding) {
-        // Update as more stats are added
-        const newPokemon = {
-            nickname: document.getElementById("input-nickname").value,
-            gender: document.getElementById("input-gender").value,
-            nature: document.getElementById("input-nature").value,
-            generation: 0, // Doesn't matter - changing this anyways so it depends on game
-            game: document.getElementById("input-game").value,
+  if (adding) {
 
-            // Currently Unimplemented
-
-            species: "Leafeon",
-            shiny: false,
-            level: 1,
-            location: null,
-            method: null,
-            moves: null,
-            baseStats: null,
-            trainer_id: 2,
-        };
-
-        console.log(newPokemon);
-
-        await fetch("/api/pokemon", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newPokemon),
-        });
+    let isShiny = false;
+    if (document.querySelector('input[name="shiny"]:checked')?.value == "Yes") {
+      isShiny = true;
     }
-    displayCard();
-    const screen = document.getElementById("add-pokemon-modal");
-    screen.style.display = "none";
+
+    // Update as more stats are added
+    const newPokemon = {
+      nickname: document.getElementById("input-nickname").value,
+      gender: document.getElementById("input-gender").value,
+      shiny: isShiny,
+      nature: document.getElementById("input-nature").value,
+      generation: 0, // Doesn't matter - changing this anyways so it depends on game
+      game: document.getElementById("input-game").value,
+      location: document.getElementById("input-location").value,
+
+
+
+      // Currently Unimplemented
+
+      species: "Leafeon",
+      level: 1,
+      method: null,
+      moves: null,
+      baseStats: null,
+      trainer_id: 0
+    };
+
+    console.log(newPokemon);
+
+    await fetch("/api/pokemon", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(newPokemon),
+    });
+
+  }
+  displayCard();
+  const screen = document.getElementById("add-pokemon-modal");
+  screen.style.display = 'none';
 }
 
 // Displays all caught pokemon
@@ -212,12 +221,15 @@ async function displayCard() {
             alt="${mon.species}"
           />
           <div class="content">`;
-        if (mon.nickname) {
-            cardHtml += `<h3 class="pokemon_name">${mon.nickname} (${mon.species})</h3>`;
-        } else {
-            cardHtml += `<h3 class="pokemon_name">${mon.species}</h3>`;
-        }
-        cardHtml += `
+    
+    if (mon.nickname) {
+      cardHtml += `<h3 class="pokemon_name" style="margin: 0px;">${mon.nickname}</h3>
+      <h4 style="margin-top: 0px; margin-bottom: 10px">(${mon.species})</h4>`
+    } else {
+      cardHtml += `<h3 class="pokemon_name">${mon.species}</h3>`;
+      }
+
+      cardHtml += `
             <div class="pokemon-info-grid">
               <div class="info-group">
                 <span class="info-label" id="nickname-label">nickname</span>
@@ -265,14 +277,27 @@ async function displayCard() {
             </div>
             <div class="card-footer">
               <button class="fav-button">❤️</button>
-              <div class="status-icons">
-                <span class="icon gender-icon">♂️</span>
-                <span class="icon shiny-icon">✨</span>
+              <div class="status-icons">`
+      
+      let genderIcon = "";
+      if (mon.gender.toLowerCase() == "male") {
+        genderIcon = "♂️";
+      } else if (mon.gender.toLowerCase() == "female") {
+        genderIcon = "♀️";
+      }
+
+      let shinyIcon = "";
+      if (mon.shiny) {
+        shinyIcon = "✨";
+      }
+
+      cardHtml +=`<span class="icon gender-icon">${genderIcon}</span>
+                <span class="icon shiny-icon">${shinyIcon}</span>
               </div>
             </div>
           </div>
         </div>
     `;
-        cardHolder.innerHTML = cardHtml;
-    });
+    cardHolder.innerHTML += cardHtml;
+  });
 }

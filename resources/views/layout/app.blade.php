@@ -25,13 +25,14 @@
   <div class="nav-right">
 
     <ul class="nav-links">
-      <li><a href="#login" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">Log In</a></li>
+      <li><a href="{{ route('logout') }}" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">Log Out</a></li>
+      <li><a href="{{ route('info') }}" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">User Info</a></li>
       <li><a href="#setting" style="color: #ffffff !important; font-family: 'Silkscreen', sans-serif !important; font-size: 16px !important; text-decoration: none !important;">:</a></li>
     </ul>
 
   </div>
 </nav>
-    <header class="search-section">
+<header class="search-section">
       <div class="search-container">
         <div class="search-box">
           <input
@@ -49,7 +50,7 @@
           <div id="custom-dropdown" class="custom-dropdown-menu hidden"></div>
         </div>
       </div>
-    </header>
+</header>
     <!-- Page Content -->
     @yield('content')
 </body>

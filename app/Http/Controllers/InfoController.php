@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Trainer;
 
-class DexController extends Controller
+class InfoController extends Controller
 {
-    public function dex()
+    public function info()
     {
         $account = Auth::user();
         $trainer = Trainer::findorFail($account->trainerID);
 
-        return view('dex', ['account' => $account, 'trainer' => $trainer]);
+        return view('info', ['account' => $account, 'trainer' => $trainer]);
     }
 }

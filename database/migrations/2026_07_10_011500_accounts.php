@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainer', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table -> string('name');
-            $table -> integer('dexCount')->default(0);
-            $table -> integer('monCount')->default(0);
-            $table -> integer('shinyCount')->default(0);
-            $table -> integer('shinyDex')->default(0);
-            $table->timestamps();
+            $table->string("email")->isNotEmpty();
+            $table->string("password")->isNotEmpty();
+            $table->unsignedBigInteger("trainerID")->isNotEmpty();
+            $table->timestamp("registered");
         });
     }
 
@@ -28,6 +26,5 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('trainer');
     }
 };

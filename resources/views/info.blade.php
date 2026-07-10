@@ -5,7 +5,8 @@
 
     <p>
         Name: {{ $trainer->name }}<br/>
-        email: {{ $account->email }}<br/><br/>
+        email: {{ $account->email }}<br/>
+        Trainer ID: {{ $account->trainerID }}<br/><br/>
 
         Pokedex: {{ $trainer->dexCount }}<br/>
         Shiny Pokedex: {{ $trainer->shinyDex }}<br/>

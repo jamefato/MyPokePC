@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pokemon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PokemonController extends Controller
 {
@@ -31,12 +32,12 @@ class PokemonController extends Controller
             "method" => "nullable|string",
             "moves" => "nullable|string", 
             "baseStats" => "nullable|array", 
-            "trainer_id" => "nullable|integer",
         ]);
 
         // Sets time caught as right now
         
         $validated["dateCaught"] = now();
+        $validated["trainer_id"] = Auth::user()->trainerID;
 
         $pokemon = Pokemon::create($validated);
         return response()->json($pokemon, 201);

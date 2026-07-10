@@ -242,14 +242,15 @@ async function endAddMon(adding) {
       method: null,
       moves: null,
       baseStats: null,
-      trainer_id: 0
     };
 
     console.log(newPokemon);
 
     await fetch("/api/pokemon", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json",
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+      },
       body: JSON.stringify(newPokemon),
     });
 
@@ -381,6 +382,12 @@ async function displayCard() {
                 <span class="info-label" id="nickname-label">nickname</span>
                 <span class="info-value" id="nickname-value">${mon.nickname}</span>
               </div>
+
+              <div class="info-group">
+                <span class="info-label" id="nature-label">trainer id</span>
+                <span class="info-value" id="nature-value">${mon.trainer_id}</span>
+              </div>
+
               <div class="info-group">
                 <span class="info-label" id="nature-label">nature</span>
                 <span class="info-value" id="nature-value">${mon.nature}</span>

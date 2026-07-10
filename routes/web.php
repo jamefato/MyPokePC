@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DexController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\PokemonController;
 
 Route::get('/', [AboutController::class, 'about'])->name('about');
 
@@ -26,3 +27,6 @@ Route::get('/dex', [DexController::class, 'dex'])->name('dex')->middleware('auth
 Route::get('/info', [InfoController::class, 'info'])->name('info')->middleware('auth');
 
 Route::view('/register', 'register') -> name('register');
+
+Route::get('/api/pokemon', [PokemonController::class, 'index']);
+Route::post('/api/pokemon', [PokemonController::class, 'store']);

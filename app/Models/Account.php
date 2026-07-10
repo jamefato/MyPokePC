@@ -15,4 +15,8 @@ class Account extends Authenticatable
     protected $table = 'accounts';
     protected $fillable = ['email', 'password', 'trainerID'];
     protected $hidden = ['password', 'remember_token'];
+
+    public function trainer() {
+        return $this->belongsTo(Trainer::class, 'trainerID');
+    }
 }

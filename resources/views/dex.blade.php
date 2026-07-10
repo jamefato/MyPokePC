@@ -21,7 +21,8 @@
         </div>
         <div class="modal-title-wrapper">
           <span class="modal-subtitle">YOU CAUGHT:</span>
-          <h2 class="modal-title">Burmy</h2>
+          <input type="text" class="modal-title" id="input-name" placeholder="e.g. Pikachu" autocomplete="off" style="max-width: 75%"/>
+          <div id="caughtMon"></div>
         </div>
       </div>
 
@@ -78,31 +79,31 @@
               autocomplete="off"
             />
             <ul class="dropdown-results">
-              <li class="dropdown-item">Adamant</li>
-              <li class="dropdown-item">Bashful</li>
-              <li class="dropdown-item">Bold</li>
-              <li class="dropdown-item">Brave</li>
-              <li class="dropdown-item">Calm</li>
-              <li class="dropdown-item">Careful</li>
-              <li class="dropdown-item">Docile</li>
-              <li class="dropdown-item">Gentle</li>
-              <li class="dropdown-item">Hardy</li>
-              <li class="dropdown-item">Hasty</li>
-              <li class="dropdown-item">Impish</li>
-              <li class="dropdown-item">Jolly</li>
-              <li class="dropdown-item">Lax</li>
-              <li class="dropdown-item">Lonely</li>
-              <li class="dropdown-item">Mild</li>
-              <li class="dropdown-item">Modest</li>
-              <li class="dropdown-item">Naive</li>
-              <li class="dropdown-item">Naughty</li>
-              <li class="dropdown-item">Quiet</li>
-              <li class="dropdown-item">Quirky</li>
-              <li class="dropdown-item">Rash</li>
-              <li class="dropdown-item">Relaxed</li>
-              <li class="dropdown-item">Sassy</li>
-              <li class="dropdown-item">Serious</li>
-              <li class="dropdown-item">Timid</li>
+              <li class="dropdown-item" id="natureType">Adamant</li>
+              <li class="dropdown-item" id="natureType">Bold</li>
+              <li class="dropdown-item" id="natureType">Brave</li>
+              <li class="dropdown-item" id="natureType">Bashful</li>
+              <li class="dropdown-item" id="natureType">Calm</li>
+              <li class="dropdown-item" id="natureType">Careful</li>
+              <li class="dropdown-item" id="natureType">Docile</li>
+              <li class="dropdown-item" id="natureType">Gentle</li>
+              <li class="dropdown-item" id="natureType">Hardy</li>
+              <li class="dropdown-item" id="natureType">Hasty</li>
+              <li class="dropdown-item" id="natureType">Impish</li>
+              <li class="dropdown-item" id="natureType">Jolly</li>
+              <li class="dropdown-item" id="natureType">Lax</li>
+              <li class="dropdown-item" id="natureType">Lonely</li>
+              <li class="dropdown-item" id="natureType">Mild</li>
+              <li class="dropdown-item" id="natureType">Modest</li>
+              <li class="dropdown-item" id="natureType">Naive</li>
+              <li class="dropdown-item" id="natureType">Naughty</li>
+              <li class="dropdown-item" id="natureType">Quiet</li>
+              <li class="dropdown-item" id="natureType">Quirky</li>
+              <li class="dropdown-item" id="natureType">Rash</li>
+              <li class="dropdown-item" id="natureType">Relaxed</li>
+              <li class="dropdown-item" id="natureType">Sassy</li>
+              <li class="dropdown-item" id="natureType">Serious</li>
+              <li class="dropdown-item" id="natureType">Timid</li>
             </ul>
           </div>
         </div>
@@ -147,12 +148,12 @@
             />
 
             <ul class="dropdown-results">
-              <li class="dropdown-item">Omega Ruby</li>
-              <li class="dropdown-item">Alpha Sapphire</li>
-              <li class="dropdown-item">X</li>
-              <li class="dropdown-item">Y</li>
-              <li class="dropdown-item">Black</li>
-              <li class="dropdown-item">White</li>
+              <li class="dropdown-item" id="gameType">Omega Ruby</li>
+              <li class="dropdown-item" id="gameType">Alpha Sapphire</li>
+              <li class="dropdown-item" id="gameType">X</li>
+              <li class="dropdown-item" id="gameType">Y</li>
+              <li class="dropdown-item" id="gameType">Black</li>
+              <li class="dropdown-item" id="gameType">White</li>
             </ul>
           </div>
         </div>
@@ -171,12 +172,12 @@
             />
 
             <ul class="dropdown-results">
-              <li class="dropdown-item">Route 205</li>
-              <li class="dropdown-item">Route 206</li>
-              <li class="dropdown-item">Route 207</li>
-              <li class="dropdown-item">Route 208</li>
-              <li class="dropdown-item">Route 209</li>
-              <li class="dropdown-item">Route 210</li>
+              <li class="dropdown-item" id="locationType">Route 205</li>
+              <li class="dropdown-item" id="locationType">Route 206</li>
+              <li class="dropdown-item" id="locationType">Route 207</li>
+              <li class="dropdown-item" id="locationType">Route 208</li>
+              <li class="dropdown-item" id="locationType">Route 209</li>
+              <li class="dropdown-item" id="locationType">Route 210</li>
             </ul>
           </div>
         </div>

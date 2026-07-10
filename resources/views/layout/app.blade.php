@@ -10,20 +10,24 @@
 </head>
 <body>
     <nav class="navbar">
-      <div class="nav-left">
-        <div class="nav-logo"><a href="{{ route("home") }}">MyPokéPC</a></div>
-        <ul class="nav-links">
-          <li><a href="{{ route("dex") }}">Dex</a></li>
-          <li><a href="#target">Targets</a></li>
-        </ul>
-      </div>
-      <div class="nav-right">
-        <ul class="nav-links">
-          <li><a href="#login">Log In</a></li>
-          <li><a href="#setting">:</a></li>
-        </ul>
-      </div>
-    </nav>
+  <div class="nav-left">
+    <div class="nav-logo">
+      <a href="{{ route('home') }}">MyPokéPC</a>
+    </div>
+    
+    <ul class="nav-links">
+      <li><a href="{{ route('dex') }}">Dex</a></li>
+      <li><a href="#target">Targets</a></li>
+    </ul>
+  </div>
+  
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#login">Log In</a></li>
+      <li><a href="#setting">:</a></li>
+    </ul>
+  </div>
+</nav>
     <header class="search-section">
       <div class="search-container">
         <div class="search-box">

@@ -29,13 +29,6 @@ body {
     gap: 40px; /* Puts healthy space between the logo and the link list */
 }
 
-.nav-logo {
-    font-family: "Pixelify Sans", sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    color: white;
-}
-
 .nav-links {
     display: flex;
     gap: 24px; /* Spaces out Dex, Target, and Settings horizontally */
@@ -44,17 +37,21 @@ body {
     padding: 0;
 }
 
-.nav-links a {
+.nav-links .nav-logo a {
     text-decoration: none;
     font-weight: 500;
-    font-size: 16px;
     color: white;
     transition: color 0.2s ease;
 }
-
-.nav-links a:hover {
-    color: rgba(255, 255, 255, 0.5); /* Darkens slightly when hovered */
+.nav-links .nav-logo a:hover {
+    color: rgba(
+        255,
+        255,
+        255,
+        0.5
+    ) !important; /* Darkens slightly when hovered */
 }
+
 .search-section {
     display: flex;
     justify-content: center; /* Centers the search bar horizontally */

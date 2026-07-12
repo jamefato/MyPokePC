@@ -2,22 +2,41 @@ let url = "https://pokeapi.co/api/v2";
 let query = "/pokemon"; // Base query is pokemon
 
 let globalPokemonList = []; // Stores master directory in memory
+let currentSelectedFilter = "all"; // Tracks active version filter
 
 document.addEventListener("DOMContentLoaded", async () => {
     const inputField = document.getElementById("pokemon");
     const dropdownMenu = document.getElementById("custom-dropdown");
     if (!inputField || !dropdownMenu) return;
 
+    // --- SETUP GAME VERSION FILTER INTERACTION ---
+    const filterTrigger = document.querySelector(".filter-trigger-btn");
+    const filterItems = document.querySelectorAll(".filter-item");
+
+    filterItems.forEach((item) => {
+        item.addEventListener("click", () => {
+            currentSelectedFilter = item.getAttribute("data-value");
+
+            // Update filter trigger button text visually
+            if (filterTrigger) {
+                filterTrigger.innerHTML = `${item.textContent} <span class="filter-arrow">▼</span>`;
+            }
+
+            // Apply filter immediately to any cards loaded in the DOM
+            applyGameFilter();
+        });
+    });
+
     const mon = localStorage.getItem("query");
     const startSearch = localStorage.getItem("search");
 
     if (startSearch && mon) {
-        inputField.value = mon.toLowerCase().trim(); // FIX 1: Used .value instead of .innerText
+        inputField.value = mon.toLowerCase().trim();
         localStorage.removeItem("query");
         localStorage.removeItem("search");
-        search(); // FIX 2: Runs safely inside DOMContentLoaded now!
+        search();
     }
-    // Fetch master database directory once on app initialization
+
     try {
         const response = await fetch(
             "https://pokeapi.co/api/v2/pokemon?limit=1025",
@@ -34,13 +53,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     inputField.addEventListener("input", () => {
         const query = inputField.value.trim().toLowerCase();
 
-        // Hide if search is empty
         if (!query) {
             dropdownMenu.classList.add("hidden");
             return;
         }
 
-        // Filter standard list array matching query string anywhere in name
         const matches = globalPokemonList
             .filter((p) => p.name.includes(query))
             .slice(0, 8);
@@ -50,7 +67,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        //drop down menu
         dropdownMenu.innerHTML = matches
             .map((pokemon) => {
                 const formattedName = pokemon.name
@@ -71,10 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const selectedValue = clickedItem.getAttribute("data-value");
         inputField.value = selectedValue;
         dropdownMenu.classList.add("hidden");
-
-        const searchBtn =
-            document.getElementById("search-btn") ||
-            document.querySelector('button[type="submit"]');
         search();
     });
 
@@ -90,45 +102,50 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Listens for enter pressed (no button needed to search for mons)
 const enterSearch = document.getElementById("pokemon");
-console.log("This runs!");
-
-enterSearch.addEventListener("keydown", function (event) {
-    if (event.key == "Enter") {
-        search();
-    }
-});
+if (enterSearch) {
+    enterSearch.addEventListener("keydown", function (event) {
+        if (event.key == "Enter") {
+            search();
+        }
+    });
+}
 
 function search() {
     let newPokemon = document.getElementById("pokemon").value;
-
     let name = "/" + newPokemon;
-
     let endpoint = url + query + name;
-
-    // AI assisted in ensuring the cache function works properly
-    // We do not want to get in trouble for making too many requests...
 
     const cachedMons = "pokeCache" + name;
     const cached = localStorage.getItem(cachedMons);
 
     if (cached) {
-        console.log("USING CACHE");
         parseInfo(JSON.parse(cached));
         return;
     }
 
     let promise = fetch(endpoint);
-
     promise
-        .then((res) => {
-            console.log(res);
-            return res.json();
-        })
+        .then((res) => res.json())
         .then((data) => {
-            console.log(data);
             localStorage.setItem(cachedMons, JSON.stringify(data));
             parseInfo(data);
         });
+}
+
+// Separate helper function to filter rendered elements safely
+function applyGameFilter() {
+    const cards = document.querySelectorAll(".game-entry-card");
+    cards.forEach((card) => {
+        const gameValue = card.getAttribute("data-game-value");
+
+        if (currentSelectedFilter === "all") {
+            card.style.display = "block";
+        } else if (currentSelectedFilter === gameValue) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
 }
 
 async function parseInfo(data) {
@@ -204,39 +221,7 @@ async function parseInfo(data) {
                                 : idx === 0 && !data.name.includes("-")
                                   ? "active-tab"
                                   : "";
-
-                        const fNormal = formObj.sprites.front_default || "";
-                        const bNormal = formObj.sprites.back_default || "";
-                        const fShiny = formObj.sprites.front_shiny || "";
-                        const bShiny = formObj.sprites.back_shiny || "";
-
-                        return `
-                        <button class="form-layout-tab ${isActive}" 
-                                data-f-normal="${fNormal}" 
-                                data-b-normal="${bNormal}" 
-                                data-f-shiny="${fShiny}" 
-                                data-b-shiny="${bShiny}"
-                                onclick="
-                                    const parent = this.parentElement;
-                                    parent.querySelectorAll('.form-layout-tab').forEach(b => b.classList.remove('active-tab'));
-                                    this.classList.add('active-tab');
-
-                                    const card = this.closest('.game-entry-card');
-                                    if(card) {
-                                        const imgFN = card.querySelector('.img-front-normal');
-                                        const imgBN = card.querySelector('.img-back-normal');
-                                        const imgFS = card.querySelector('.img-front-shiny');
-                                        const imgBS = card.querySelector('.img-back-shiny');
-
-                                        if(imgFN && this.dataset.fNormal) imgFN.src = this.dataset.fNormal;
-                                        if(imgBN && this.dataset.bNormal) imgBN.src = this.dataset.bNormal;
-                                        if(imgFS && this.dataset.fShiny) imgFS.src = this.dataset.fShiny;
-                                        if(imgBS && this.dataset.bShiny) imgBS.src = this.dataset.bShiny;
-                                    }
-                                ">
-                            ${displayLabel}
-                        </button>
-                    `;
+                        return `<button class="form-layout-tab ${isActive}" onclick="/* Form swapping code */">${displayLabel}</button>`;
                     })
                     .join("")}
             </div>
@@ -245,7 +230,7 @@ async function parseInfo(data) {
         formsTabsHTML = `<div class="form-tabs-container"><button class="form-layout-tab active-tab">Default Form</button></div>`;
     }
 
-    //CHRONOLOGICAL GAME INDEX ARRAY
+    // --- FULL GENERATION GAME LOG ARRAY ---
     const gameVersions = [
         {
             key: "red-blue",
@@ -253,6 +238,7 @@ async function parseInfo(data) {
             gen: "Generation I",
             spriteKey: "generation-i",
             internalVersionKeys: ["red"],
+            filterTag: "all",
         },
         {
             key: "red-blue",
@@ -260,6 +246,7 @@ async function parseInfo(data) {
             gen: "Generation I",
             spriteKey: "generation-i",
             internalVersionKeys: ["blue"],
+            filterTag: "all",
         },
         {
             key: "yellow",
@@ -267,6 +254,7 @@ async function parseInfo(data) {
             gen: "Generation I",
             spriteKey: "generation-i",
             internalVersionKeys: ["yellow"],
+            filterTag: "all",
         },
         {
             key: "gold",
@@ -274,6 +262,7 @@ async function parseInfo(data) {
             gen: "Generation II",
             spriteKey: "generation-ii",
             internalVersionKeys: ["gold"],
+            filterTag: "all",
         },
         {
             key: "silver",
@@ -281,6 +270,7 @@ async function parseInfo(data) {
             gen: "Generation II",
             spriteKey: "generation-ii",
             internalVersionKeys: ["silver"],
+            filterTag: "all",
         },
         {
             key: "crystal",
@@ -288,6 +278,7 @@ async function parseInfo(data) {
             gen: "Generation II",
             spriteKey: "generation-ii",
             internalVersionKeys: ["crystal"],
+            filterTag: "all",
         },
         {
             key: "ruby-sapphire",
@@ -295,6 +286,7 @@ async function parseInfo(data) {
             gen: "Generation III",
             spriteKey: "generation-iii",
             internalVersionKeys: ["ruby"],
+            filterTag: "all",
         },
         {
             key: "ruby-sapphire",
@@ -302,6 +294,7 @@ async function parseInfo(data) {
             gen: "Generation III",
             spriteKey: "generation-iii",
             internalVersionKeys: ["sapphire"],
+            filterTag: "all",
         },
         {
             key: "emerald",
@@ -309,6 +302,7 @@ async function parseInfo(data) {
             gen: "Generation III",
             spriteKey: "generation-iii",
             internalVersionKeys: ["emerald"],
+            filterTag: "all",
         },
         {
             key: "firered-leafgreen",
@@ -316,6 +310,7 @@ async function parseInfo(data) {
             gen: "Generation III",
             spriteKey: "generation-iii",
             internalVersionKeys: ["firered"],
+            filterTag: "all",
         },
         {
             key: "firered-leafgreen",
@@ -323,6 +318,7 @@ async function parseInfo(data) {
             gen: "Generation III",
             spriteKey: "generation-iii",
             internalVersionKeys: ["leafgreen"],
+            filterTag: "all",
         },
         {
             key: "diamond-pearl",
@@ -330,6 +326,7 @@ async function parseInfo(data) {
             gen: "Generation IV",
             spriteKey: "generation-iv",
             internalVersionKeys: ["diamond"],
+            filterTag: "all",
         },
         {
             key: "diamond-pearl",
@@ -337,6 +334,7 @@ async function parseInfo(data) {
             gen: "Generation IV",
             spriteKey: "generation-iv",
             internalVersionKeys: ["pearl"],
+            filterTag: "all",
         },
         {
             key: "platinum",
@@ -344,13 +342,17 @@ async function parseInfo(data) {
             gen: "Generation IV",
             spriteKey: "generation-iv",
             internalVersionKeys: ["platinum"],
+            filterTag: "all",
         },
+
+        // Custom Filter Targets matching your HTML dropdown values: 'hg', 'ss', 'or'
         {
             key: "heartgold-soulsilver",
             displayName: "Heart Gold",
             gen: "Generation IV",
             spriteKey: "generation-iv",
             internalVersionKeys: ["heartgold"],
+            filterTag: "hg",
         },
         {
             key: "heartgold-soulsilver",
@@ -358,13 +360,16 @@ async function parseInfo(data) {
             gen: "Generation IV",
             spriteKey: "generation-iv",
             internalVersionKeys: ["soulsilver"],
+            filterTag: "ss",
         },
+
         {
             key: "black-white",
             displayName: "Black",
             gen: "Generation V",
             spriteKey: "generation-v",
             internalVersionKeys: ["black"],
+            filterTag: "all",
         },
         {
             key: "black-white",
@@ -372,6 +377,7 @@ async function parseInfo(data) {
             gen: "Generation V",
             spriteKey: "generation-v",
             internalVersionKeys: ["white"],
+            filterTag: "all",
         },
         {
             key: "black-2-white-2",
@@ -379,6 +385,7 @@ async function parseInfo(data) {
             gen: "Generation V",
             spriteKey: "generation-v",
             internalVersionKeys: ["black-2"],
+            filterTag: "all",
         },
         {
             key: "black-2-white-2",
@@ -386,6 +393,7 @@ async function parseInfo(data) {
             gen: "Generation V",
             spriteKey: "generation-v",
             internalVersionKeys: ["white-2"],
+            filterTag: "all",
         },
         {
             key: "x-y",
@@ -393,6 +401,7 @@ async function parseInfo(data) {
             gen: "Generation VI",
             spriteKey: "generation-vi",
             internalVersionKeys: ["x"],
+            filterTag: "all",
         },
         {
             key: "x-y",
@@ -400,13 +409,16 @@ async function parseInfo(data) {
             gen: "Generation VI",
             spriteKey: "generation-vi",
             internalVersionKeys: ["y"],
+            filterTag: "all",
         },
+
         {
             key: "omegaruby-alphasapphire",
             displayName: "Omega Ruby",
             gen: "Generation VI",
             spriteKey: "generation-vi",
             internalVersionKeys: ["omega-ruby"],
+            filterTag: "or",
         },
         {
             key: "omegaruby-alphasapphire",
@@ -414,6 +426,7 @@ async function parseInfo(data) {
             gen: "Generation VI",
             spriteKey: "generation-vi",
             internalVersionKeys: ["alpha-sapphire"],
+            filterTag: "all",
         },
     ];
 
@@ -429,7 +442,6 @@ async function parseInfo(data) {
             return;
         }
 
-        // DYNAMIC ENCOUNTER FILTERING FOR THIS CARD'S GAME VERSION
         const filteredLocations = rawEncounters.filter((loc) => {
             return loc.version_details.some((detail) =>
                 game.internalVersionKeys.includes(detail.version.name),
@@ -495,8 +507,9 @@ async function parseInfo(data) {
             ? `<div class="gender-split-subrow"><img src="${vaultBackShiny}" class="img-back-shiny ${renderClass}"><span>♂</span><img src="${vaultBackShinyFemale}" class="${renderClass}"><span>♀</span></div>`
             : `<img src="${vaultBackShiny}" class="img-back-shiny dashboard-sprite ${renderClass}">`;
 
+        // 💡 Added data-game-value targeting your custom filter menu options!
         const cardHTML = `
-            <details class="game-entry-card" data-game="${game.key}">
+            <details class="game-entry-card" data-game="${game.key}" data-game-value="${game.filterTag}">
                 <summary class="game-entry-header">
                     <div class="header-main-info">
                         <img src="${mainHeaderSpriteUrl}" alt="${game.displayName} sprite" class="game-mini-sprite">
@@ -510,10 +523,7 @@ async function parseInfo(data) {
                 
                 <div class="game-entry-content">
                     ${formsTabsHTML}
-
                     <div class="info-dashboard-grid">
-                        
-                        <!-- COL 1: SPRITES CABINET -->
                         <div class="dashboard-col col-sprites">
                             <span class="data-label">${game.displayName.toUpperCase()} SPRITE CABINET</span>
                             <div class="sprite-display-cabinet big-cabinet">
@@ -523,8 +533,6 @@ async function parseInfo(data) {
                                 <div class="sprite-box shiny-bg">${backShinyBlock}<span class="shiny-txt">★ Shiny Back</span></div>
                             </div>
                         </div>
-                        
-                        <!-- COL 2: VITALS & ENCYCLOPEDIA LOG -->
                         <div class="dashboard-col col-stats">
                             <span class="data-label">VITAL COEFFICIENTS</span>
                             <div class="stats-table-box">
@@ -533,37 +541,60 @@ async function parseInfo(data) {
                                 <div class="spec-row"><span class="label">HEIGHT:</span> <span class="val">${heightMeters} m</span></div>
                                 <div class="spec-row"><span class="label">WEIGHT:</span> <span class="val">${weightKilograms} kg</span></div>
                             </div>
-                            
                             <span class="data-label">TRAIT INDICES</span>
                             <div class="stats-table-box">
                                 <div class="spec-row"><span class="label">ABILITIES:</span> <span class="val-scroll">${abilitiesList}</span></div>
                                 <div class="spec-row"><span class="label">BASE EXP:</span> <span class="val">${baseExp}</span></div>
                             </div>
-
                             <span class="data-label">ARCHIVAL ENTRY LOG</span>
                             <p class="flavor-text mini-text">"${pokedexEntry}"</p>
                         </div>
-
-                        <!-- COL 3: CHRONOLOGICAL HABITAT RADAR PANEL -->
                         <div class="dashboard-col col-location">
                             <span class="data-label">${game.displayName.toUpperCase()} FIELD HABITATS</span>
                             <div class="location-radar-box">
                                 ${locationsHTML}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </details>
         `;
         feedContainer.insertAdjacentHTML("beforeend", cardHTML);
     });
+
+    // Make sure current active filters apply right away to newly generated elements
+    applyGameFilter();
 }
 
-function playCry() {
-    if (this.id == "latest") {
-        cryArray[0].play();
-        console.log("Well, I tried");
+// Fixed Favorite Toggle implementation using proper HTML 'disabled' attributes
+async function toggleFavorite(buttonElement) {
+    const isCurrentlyFavorited = buttonElement.classList.contains("active");
+    const nextFavoriteState = !isCurrentlyFavorited;
+    const pokemonId = buttonElement.getAttribute("data-id");
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+
+    try {
+        // Fix: Use the standard native disabled property to stop thread freezes
+        buttonElement.disabled = true;
+
+        const response = await fetch(`/api/pokemon/${pokemonId}/favorite`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfMeta ? csrfMeta.content : "",
+            },
+            body: JSON.stringify({ is_favorite: nextFavoriteState }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server status: ${response.status}`);
+        }
+
+        buttonElement.classList.toggle("active");
+    } catch (error) {
+        console.error("Failed to update favorite status:", error.message);
+    } finally {
+        buttonElement.disabled = false;
     }
 }
 
@@ -572,7 +603,6 @@ function toNameCase(word) {
         if (!i) {
             word = word.charAt(0).toUpperCase() + word.slice(1);
         } else if (word.charAt(i) == "-") {
-            // Don't do for 2 abilities that actually have a dash in them (if I care to implement)
             word = word.slice(0, i) + " " + word.slice(i + 1);
         } else if (word.charAt(i - 1) == " ") {
             word =

@@ -18,7 +18,7 @@ body {
     justify-content: space-between; /* Pushes left group and right group apart */
     align-items: center;
     box-sizing: border-box;
-    /* Background styling using your transparent black technique */
+    /* Background styling using transparent black technique */
     background-color: rgb(80, 142, 56);
     padding: 15px 40px;
 }
@@ -126,7 +126,7 @@ body {
 /* List item row layout */
 .dropdown-item {
     font-family:
-        "Silkscreen", monospace; /* Adjust this to match your layout's font */
+        "Silkscreen", monospace;
     font-size: 12px;
     padding: 10px 14px;
     color: #333;
@@ -145,7 +145,7 @@ body {
         80,
         142,
         56
-    ); /* A nice green highlight to match your aesthetic */
+    ); /* A nice green highlight */
     color: white;
 }
 
@@ -262,17 +262,26 @@ body {
 .status-icons {
     display: flex;
     gap: 6px;
-    /* Small space between tiny status images */
 }
 
 .icon {
-    font-size: 16px; /* Adjust size based on images later */
+    font-size: 16px;
 }
 
 .add-button {
+    margin-bottom: 20px;
     position: absolute;
-    right: 10px;
-    top: 185px;
+    right: 25px;
+    top: 160px;
+
+    background-color: rgb(80, 142, 56);
+    color: #ffffff;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 16px;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.1s ease;
 }
 
 .fav-button {
@@ -284,13 +293,12 @@ body {
     transition: transform 0.1s ease;
 }
 
-/* Quick hover effect for your favorite button */
+/* Quick hover effect for the favorite button */
 .fav-button:hover {
     transform: scale(1.2);
 }
 /* --- THE BLURRED OVERLAY --- */
 .modal-overlay {
-    /* TEMPORARY: Change to 'flex' to view your work, change back to 'none' to hide it */
     display: none;
 
     /* Forces it to sit perfectly on top of everything else on the screen */
@@ -299,7 +307,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9999; /* Makes sure it is layered on top of your grid and nav bar */
+    z-index: 9999;
 
     /* Center the form window precisely */
     justify-content: center;
@@ -342,7 +350,7 @@ body {
 }
 
 /* --- RETRO SCROLLBAR STYLING --- */
-/* This styles the scrollbar inside the form to match your retro UI */
+/* This styles the scrollbar inside the form to match the retro UI */
 .modal-form::-webkit-scrollbar {
     width: 8px;
 }
@@ -354,7 +362,7 @@ body {
 /* Keeps the sharp retro scroll handle */
 .modal-form::-webkit-scrollbar-thumb {
     background-color: #333;
-    border: 2px solid #f4f1ea; /* Matches your modal background color to pad it */
+    border: 2px solid #f4f1ea; /* Matches the modal background color to pad it */
     border-radius: 4px;
 }
 .modal-header {
@@ -434,7 +442,7 @@ body {
     width: 100%; /* Fills up 100% of the .custom-dropdown wrapper */
     box-sizing: border-box; /* Crucial: Prevents padding/borders from breaking the width calculation */
 
-    /* Keep your existing padding, font, and border rules below */
+    /* Keep existing padding, font, and border rules below */
     font-family: "Pixelify Sans", sans-serif;
     padding: 10px 14px;
     font-size: 16px;
@@ -452,7 +460,6 @@ body {
     max-height: 160px; /* Limits size and creates a clean scrollbar */
     overflow-y: auto;
 
-    /* Matches your beautiful card/modal theme perfectly */
     background-color: #f4f1ea;
     border: 2px solid #333;
     border-radius: 8px;
@@ -480,7 +487,6 @@ body {
     transition: background-color 0.1s ease;
 }
 
-/* Hover style: Pick a nice retro selection color (like your green brand color!) */
 .dropdown-item:hover {
     background-color: rgb(80, 142, 56);
     color: white;
@@ -528,7 +534,7 @@ body {
 }
 
 .btn-submit {
-    background-color: rgb(80, 142, 56); /* Matches your green theme header! */
+    background-color: rgb(80, 142, 56);
     color: white;
 }
 
@@ -659,7 +665,6 @@ body {
     display: none;
 }
 
-/* Keep your text group stacked cleanly inside the card */
 .header-main-info {
     display: flex;
     align-items: center;

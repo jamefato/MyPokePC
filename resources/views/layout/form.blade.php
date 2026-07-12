@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MyPokePC</title>
     <link rel = "stylesheet" href = '<?php echo(asset("css/style.css")) ?>'/>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+</head>
 </head>
 <body>
     <nav class="navbar">

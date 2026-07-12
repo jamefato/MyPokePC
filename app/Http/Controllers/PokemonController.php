@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pokemon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Trainer;
 
 class PokemonController extends Controller
 {
@@ -32,14 +33,38 @@ class PokemonController extends Controller
             "method" => "nullable|string",
             "moves" => "nullable|string", 
             "baseStats" => "nullable|array", 
+            "dateCaught" => "nullable|date"
         ]);
 
-        // Sets time caught as right now
+        // Sets trainer ID to user
         
-        $validated["dateCaught"] = now();
         $validated["trainer_id"] = Auth::user()->trainerID;
 
+
+        // Everything regarding the trainer (incrementing counts)
+
+
+        // For incrementing pokedex
+        $newTrainerMon = !Pokemon::where("trainer_id", $validated["trainer_id"])->where("species", $validated["species"])->exists();
+
+        // For incrementing shinydex
+        $newTrainerShiny = !Pokemon::where("trainer_id", $validated["trainer_id"])->where("shiny", true)->where("species", $validated["species"])->exists();
+
         $pokemon = Pokemon::create($validated);
+        $trainer = Trainer::find($validated["trainer_id"]);
+
+        $trainer->increment("monCount");
+
+        if ($validated["shiny"]) {
+            $trainer->increment("shinyCount");
+        }
+        if ($newTrainerMon) {
+            $trainer->increment("dexCount");
+        }
+        if ($newTrainerShiny) {
+            $trainer->increment("shinyDex");
+        }
+
         return response()->json($pokemon, 201);
     }
 }

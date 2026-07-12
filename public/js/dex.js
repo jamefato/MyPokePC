@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     .split("-")
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(" ");
-                return `<div class="dropdown-item" data-value="${pokemon.name}" style="width: 69%;">${formattedName}</div>`;
+                return `<div class="dropdown-item" data-value="${pokemon.name}" style="width: 70%;">${formattedName}</div>`;
             })
             .join("");
 
@@ -115,6 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     dropdownCaught.addEventListener("click", (event) => {
       self.dropdownClicked(speciesInputField, event);
       dropdownCaught.classList.add("hidden");
+
+      self.setPokeSprite();
     });
 
     document.addEventListener("mousedown", (event) => {
@@ -210,35 +212,38 @@ async function endAddMon(adding) {
     if (!self.validatePokemon()) return;
 
     let isShiny = false;
-    if (document.querySelector('input[name="shiny"]:checked')?.value == "Yes") {
+    if (document.querySelector('input[name="shiny"]:checked')?.value == "true") {
       isShiny = true;
     }
 
-    // Update as more stats are added
-
     let natSub = null;
-    let locSub = null
+    let locSub = null;
+    let newDate;
     if (showingMore) {
       natSub = document.getElementById("input-nature").value;
       locSub = document.getElementById("input-location").value;
+      newDate = document.getElementById("input-date").value;
+    } else {
+      newDate = new Date().toISOString();
     }
 
     const newPokemon = {
       species: document.getElementById("input-name").value,
       nickname: document.getElementById("input-nickname").value,
+      level: document.getElementById("input-level").value,
       gender: document.getElementById("input-gender").value,
       game: document.getElementById("input-game").value,
       shiny: isShiny,
       nature: natSub,
-      generation: 0, // Doesn't matter - changing this anyways so it depends on game
       location: locSub,
+      dateCaught: newDate,
 
       // Currently Unimplemented
 
-      level: 1,
       method: null,
       moves: null,
       baseStats: null,
+      generation: 0,
     };
 
 
@@ -282,10 +287,18 @@ function validatePokemon() {
     return false;
   }
 
+  // Level
+  const level = Number(document.getElementById("input-level").value);
+  if (level < 1 || level > 100 || !Number.isInteger(level)) {
+    console.log('INVLID NUM');
+    return false;
+  }
+
   // Gender
   let genderText = document.getElementById("input-gender").value;
-  if (!genderText) {
-    genderText = "Genderless";
+  console.log
+  if (genderText == "") {
+    document.getElementById("input-gender").value = "Genderless";
   } else if (genderText.toUpperCase() != "MALE" && genderText.toUpperCase() != "FEMALE" && genderText.toUpperCase() != "GENDERLESS") {
     // Display error message/box
     return false;
@@ -311,6 +324,7 @@ function validatePokemon() {
     const natureArr = Array.from(document.querySelectorAll('[id="natureType"]'), input => input.innerText);
     const natureText = document.getElementById("input-nature").value;
     if (!natureArr.includes(natureText) && natureText != "") {
+      return false;
     }
 
     // Location (optional)
@@ -318,6 +332,16 @@ function validatePokemon() {
     const locArr = Array.from(document.querySelectorAll('[id="locationType"]'), input => input.innerText);
     const locText = document.getElementById("input-location").value;
     if (!locArr.includes(locText) && locText != "") {
+      return false;
+    }
+
+    // Date
+
+    const today = new Date();
+    let catchDay = new Date(document.getElementById("input-date").value);
+    catchDay.setHours(0, 0, 0, 0);
+    if (catchDay > today) {
+      return false;
     }
   }
 
@@ -335,15 +359,20 @@ async function displayCard() {
     const response = await fetch("/api/pokemon");
     const pokemonData = await response.json();
 
+    
+
     // Iteratively displays all pokemon
     pokemonData.forEach((mon) => {
+        let pokeNum = getIDSprite(mon.species, false, mon.shiny);
+        let pokeSprite = getIDSprite(mon.species, true, mon.shiny);
         let cardHtml = `
     <div class="card">
-          <span class="pokedex-number">#${parseInt(Object.keys(globalPokemonList).find(key => globalPokemonList[key].name === mon.species.toLowerCase())) + 1}</span>
+          <span class="pokedex-number">#${pokeNum}</span>
           <img
             class="sprite"
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/412.png"
+            src=${pokeSprite}
             alt="${mon.species}"
+            style="max-width: 111px; height:auto"
           />
           <div class="content">`;
     
@@ -354,43 +383,37 @@ async function displayCard() {
       cardHtml += `<h3 class="pokemon_name">${mon.species}</h3>`;
       }
 
-      cardHtml += `
-            <div class="pokemon-info-grid">
-              <div class="info-group">
-                <span class="info-label" id="nickname-label">nickname</span>
-                <span class="info-value" id="nickname-value">${mon.nickname}</span>
-              </div>
+    cardHtml += '<div class="pokemon-info-grid">';
 
-              <div class="info-group">
-                <span class="info-label" id="nature-label">trainer id</span>
-                <span class="info-value" id="nature-value">${mon.trainer_id}</span>
-              </div>
 
-              <div class="info-group">
-                <span class="info-label" id="nature-label">nature</span>
-                <span class="info-value" id="nature-value">${mon.nature}</span>
-              </div>
+    // Adding various attributes to the card:
 
-              <div class="info-group">
-                <span class="info-label" id="game-label">game</span>
-                <span class="info-value" id="game-value">${mon.game}</span>
-              </div>
+    const addingAtt = [
+      { label: "nickname",        key: "nickname" },
+      { label: "level",        key: "level" },
+      { label: "trainer id",      key: "trainer_id" },
+      { label: "nature",          key: "nature" },
+      { label: "game",            key: "game" },
+      { label: "caught location", key: "location" },
+      { label: "Date found",      key: "dateCaught" },
+      { label: "Method",          key: "method" },
+    ];
 
+    addingAtt.forEach(attr => {
+      let value = mon[attr.key];
+      if (attr.key == "dateCaught") {
+         value = String(mon.dateCaught).slice(0, 10);
+      }
+      if (value) {
+        cardHtml += `
               <div class="info-group">
-                <span class="info-label" id="location-label">caught location</span>
-                <span class="info-value" id="location-value">${mon.location}</span>
-              </div>
-
-              <div class="info-group">
-                <span class="info-label" id="date-label">Date found</span>
-                <span class="info-value" id="date-value">${String(mon.dateCaught).slice(0, 10)}</span>
-              </div>
-              <div class="info-group">
-                <span class="info-label" id="met  d-label">Method</span>
-                <span class="info-value" id="method-value"
-                  >${mon.method}</span
-                >
-              </div>
+                <span class="info-label" id="nickname-label">${attr.label}</span>
+                <span class="info-value" id="nickname-value">${value}</span>
+              </div>`
+      }
+    })
+    
+    cardHtml += `
             </div>
             <div class="card-footer">
               <button class="fav-button">❤️</button>
@@ -517,6 +540,14 @@ function showMore() {
             </ul>
           </div>
         </div>
+
+        <!-- DATE -->
+
+        <div class="form-group" id="extraOptions">
+          <label for="input-date">Date Caught:</label>
+          <input type="date" id="input-date">
+        </div>
+
         <div class="modal-actions" id="modal-actions">
           <button type="button" onclick="showLess()">Show Less</button>
           <button type="button" class="btn-cancel" onclick="endAddMon(false)">Cancel</button>
@@ -541,4 +572,23 @@ function showLess() {
           <button type="button" class="btn-submit" onclick="endAddMon(true)">Add to PC</button>
         </div>
   `
+}
+
+// Function that gets a pokemons ID and sprite
+// true for sprite, false for ID
+
+function getIDSprite(mon, sprite, shiny) {
+  const pokeID = parseInt(Object.keys(globalPokemonList).find(key => globalPokemonList[key].name === mon.toLowerCase())) + 1;
+  if (sprite) {
+    if (shiny) {
+      return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/" + String(pokeID) + ".png";
+    }
+    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + String(pokeID) + ".png";
+  }
+  return pokeID;
+}
+
+function setPokeSprite() {
+  document.getElementById("poke-sprite").src = getIDSprite(document.getElementById("input-name").value, true, (document.querySelector('input[name="shiny"]:checked')?.value == "true"));
+  document.getElementById("poke-sprite").style = "max-width: 100%; height:auto"
 }

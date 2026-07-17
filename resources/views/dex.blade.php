@@ -27,10 +27,6 @@
             <input type="text" class="modal-title" id="input-name" placeholder="e.g. Pikachu" autocomplete="off"/>
             <div id="caughtMon" class="custom-dropdown-menu hidden"></div>
           </div>
-
-
-          <!-- FIX LATER, USE THE SAME FORMATTING FOR A DROPDOWN AS THE OTHER THING -->
-
         </div>
       </div>
 
@@ -43,7 +39,7 @@
         <!-- LEVEL -->
 
         <div class="form-group">
-          <label for="input-level">Level: </label>
+          <label for="input-level">Level</label>
           <input type="number" id="input-level" min="1" max="100" placeholder="5">
         </div>
 
@@ -67,6 +63,22 @@
           </div>
         </div>
 
+        <!-- ABILITY -->
+
+        <div class="form-group">
+          <label for="input-ability">Ability</label>
+          <div class="custom-dropdown">
+            <input
+              type="text"
+              id="input-ability"
+              placeholder="Overgrowth, Blaze..."
+              autocomplete="off"
+            />
+
+            <ul class="dropdown-results" id="ability-dropdown"></ul>
+          </div>
+        </div>
+
         <!-- SHINY -->
 
         <div class="form-group">
@@ -78,48 +90,6 @@
 
             <label for="noShiny">No</label>
             <input type="radio" id="noShiny" name="shiny" value="false" onclick="setPokeSprite()">
-          </div>
-        </div>
-
-        <!-- GAME -->
-
-        <div class="form-group">
-          <label for="input-game">Game</label>
-
-          <div class="custom-dropdown">
-            <input
-              type="text"
-              id="input-game"
-              placeholder="Search or select a game..."
-              autocomplete="off"
-            />
-
-            <ul class="dropdown-results">
-              <li class="dropdown-item game-option">Red</li>
-              <li class="dropdown-item game-option">Blue</li>
-              <li class="dropdown-item game-option">Yellow</li>
-              <li class="dropdown-item game-option">Gold</li>
-              <li class="dropdown-item game-option">Silver</li>
-              <li class="dropdown-item game-option">Crystal</li>
-              <li class="dropdown-item game-option">Ruby</li>
-              <li class="dropdown-item game-option">Sapphire</li>
-              <li class="dropdown-item game-option">Emerald</li>
-              <li class="dropdown-item game-option">Fire Red</li>
-              <li class="dropdown-item game-option">Leaf Green</li>
-              <li class="dropdown-item game-option">Diamond</li>
-              <li class="dropdown-item game-option">Pearl</li>
-              <li class="dropdown-item game-option">Platinum</li>
-              <li class="dropdown-item game-option">Heart Gold</li>
-              <li class="dropdown-item game-option">Soul Silver</li>
-              <li class="dropdown-item game-option">Black</li>
-              <li class="dropdown-item game-option">White</li>
-              <li class="dropdown-item game-option">Black 2</li>
-              <li class="dropdown-item game-option">White 2</li>
-              <li class="dropdown-item game-option">X</li>
-              <li class="dropdown-item game-option">Y</li>
-              <li class="dropdown-item game-option">Omega Ruby</li>
-              <li class="dropdown-item game-option">Alpha Sapphire</li>
-            </ul>
           </div>
         </div>
 

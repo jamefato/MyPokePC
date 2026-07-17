@@ -613,3 +613,9 @@ function toNameCase(word) {
     }
     return word;
 }
+
+
+// Although redundant, it simplifies the HTML page
+function searchPage() {
+    search()
+}

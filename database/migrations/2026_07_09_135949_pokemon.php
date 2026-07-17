@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        
         Schema::create('pokemon', function (Blueprint $table) {
             $table->id();
             $table -> string('species');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table -> string('nature')->nullable();
             $table -> string('location')->nullable();
             $table -> string('method')->nullable();
-            $table -> text('moves')->nullable();
+            $table -> string('ability')->nullable();
             $table -> json('baseStats')->nullable();
             $table -> integer('trainer_id');
             $table->timestamps();

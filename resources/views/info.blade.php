@@ -14,5 +14,6 @@
         Shiny Pokemon: {{ $trainer->shinyCount }}<br/>
 
     </p>
+    <script src="js/info.js"></script>
 </div>
 @endsection

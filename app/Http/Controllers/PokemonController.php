@@ -23,15 +23,15 @@ class PokemonController extends Controller
         $validated = $request->validate([
             "species" => "required|string", 
             "nickname" => "nullable|string", 
+            "level" => "nullable|integer",
             "gender" => "nullable|string", 
             "shiny" => "boolean", 
-            "level" => "nullable|integer",
             "game" => "nullable|string", 
             "generation" => "nullable|integer", 
             "nature" => "nullable|string", 
             "location" => "nullable|string",
             "method" => "nullable|string",
-            "moves" => "nullable|string", 
+            "ability" => "nullable|string", 
             "baseStats" => "nullable|array", 
             "dateCaught" => "nullable|date"
         ]);
@@ -48,7 +48,10 @@ class PokemonController extends Controller
         $newTrainerMon = !Pokemon::where("trainer_id", $validated["trainer_id"])->where("species", $validated["species"])->exists();
 
         // For incrementing shinydex
-        $newTrainerShiny = !Pokemon::where("trainer_id", $validated["trainer_id"])->where("shiny", true)->where("species", $validated["species"])->exists();
+        $newTrainerShiny = false;
+        if ($validated["shiny"]) {
+            $newTrainerShiny = !Pokemon::where("trainer_id", $validated["trainer_id"])->where("shiny", true)->where("species", $validated["species"])->exists();
+        }
 
         $pokemon = Pokemon::create($validated);
         $trainer = Trainer::find($validated["trainer_id"]);

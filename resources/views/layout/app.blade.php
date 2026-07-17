@@ -44,7 +44,7 @@
             autocomplete="off"
           />
 
-          <span class="search-icon" onclick="search()">
+          <span class="search-icon" onclick="searchPage()">
             <img src="assets/icons8-search-24.png" alt="search" />
           </span>
 
